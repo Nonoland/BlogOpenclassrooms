@@ -1,11 +1,11 @@
 <?php
 namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
-use Nolandartois\BlogOpenclassrooms\Attributes\Target;
+use Nolandartois\BlogOpenclassrooms\Attributes\Route;
 
 class IndexController extends Controller
 {
-    #[Target('/')]
+    #[Route('/')]
     public function index()
     {
         echo 'lol';
