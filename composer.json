@@ -1,0 +1,18 @@
+{
+    "name": "nolandartois/blog-openclassrooms",
+    "description": "Blog project for Open Classrooms",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Nolandartois\\BlogOpenclassrooms\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nolan Dartois",
+            "email": "dartois.nolan.pro@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
