@@ -14,5 +14,10 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
+    },
+    "require": {
+        "twig/twig": "^2.0"
+    }
 }
