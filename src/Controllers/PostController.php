@@ -2,27 +2,27 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
-use Nolandartois\BlogOpenclassrooms\Attributes\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
 
 class PostController extends Controller
 {
 
-    #[Route('/articles/')]
+    #[Route('/posts')]
     public function index()
     {
-        echo 'articles';
+        echo 'posts';
     }
 
-    #[Route('/article/{id}')]
-    public function indexPostId(int $id)
+    #[Route('/post/{id:int}')]
+    public function postId($params)
     {
-
+        echo 'post id';
     }
 
-    #[Route('/article/{slug}')]
-    public function indexPostSlug(string $slug)
+    #[Route('/post/{slug:string}')]
+    public function postSlug($params)
     {
-
+        echo 'post slug';
     }
 
 }
