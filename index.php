@@ -13,6 +13,4 @@ $dispatcher = new Dispatcher();
 $dispatcher->registerController(IndexController::class);
 $dispatcher->registerController(PostController::class);
 
-//dump($dispatcher->getRoutes());
-
 $dispatcher->dispatch($request);

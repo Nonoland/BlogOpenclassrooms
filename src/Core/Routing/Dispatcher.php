@@ -2,6 +2,7 @@
 namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 
 use Exception;
+use InvalidArgumentException;
 use JetBrains\PhpStorm\NoReturn;
 use Nolandartois\BlogOpenclassrooms\Controllers\Controller;
 use ReflectionClass;
@@ -36,14 +37,14 @@ class Dispatcher
                 $matches = array_filter($matches, "is_string", ARRAY_FILTER_USE_KEY);
 
                 $this->executeRoute($controller, $route, $matches);
+                return;
             }
         }
 
         header('HTTP/1.0 404 Not Found');
-        exit();
     }
 
-    #[NoReturn] private function executeRoute(string $controller, Route $route, $params = []): void
+    #[NoReturn] private function executeRoute(string $controller, Route $route, array $params = []): void
     {
         $controller = new $controller();
         $methodName = $route->getMethodName();
@@ -53,9 +54,6 @@ class Dispatcher
         } else {
             $controller->$methodName();
         }
-
-        exit();
-
     }
 
     /**
@@ -65,7 +63,7 @@ class Dispatcher
     public function registerController(string $controller): void
     {
         if (!is_subclass_of($controller, Controller::class)) {
-            throw new Exception("$controller is not a Controller");
+            throw new InvalidArgumentException("$controller is not a Controller");
         }
 
         $this->controllers[] = $controller;

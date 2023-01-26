@@ -1,6 +1,7 @@
 {
     "name": "nolandartois/blog-openclassrooms",
     "description": "Blog project for Open Classrooms",
+    "licence" : "GPL-3.0-only",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -19,6 +20,7 @@
         "symfony/var-dumper": "^6.2"
     },
     "require": {
-        "twig/twig": "^2.0"
+        "twig/twig": "^2.0",
+        "ext-http": "*"
     }
 }

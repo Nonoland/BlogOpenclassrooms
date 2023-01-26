@@ -36,7 +36,7 @@ class Route {
 
     private function loadRegex(): void
     {
-        $regexResult = preg_match_all(
+        preg_match_all(
             $this->regexPattern,
             $this->route,
             $matches,
@@ -55,11 +55,22 @@ class Route {
 
             switch ($tmp[1]) {
                 case "int":
-                    $this->routeRegex = str_replace($match[0], $this->getRegexGroup($tmp[0], self::REGEX_INT), $this->routeRegex);
+                    $this->routeRegex = str_replace(
+                        $match[0],
+                        $this->getRegexGroup($tmp[0], self::REGEX_INT),
+                        $this->routeRegex
+                    );
                     break;
                 case "string":
-                    $this->routeRegex = str_replace($match[0], $this->getRegexGroup($tmp[0], self::REGEX_STRING), $this->routeRegex);
+                    $this->routeRegex = str_replace(
+                        $match[0],
+                        $this->getRegexGroup($tmp[0],
+                            self::REGEX_STRING),
+                        $this->routeRegex
+                    );
                     break;
+                default:
+                    throw new \InvalidArgumentException("Type $tmp[1] not exist for route regex");
             }
         }
     }
