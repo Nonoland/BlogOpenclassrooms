@@ -11,12 +11,14 @@ use ReflectionMethod;
 
 class Dispatcher
 {
-    private array $controllers = [];
-
     private array $routes = [];
+
+    private Request $request;
 
     #[NoReturn] public function dispatch(Request $request): void
     {
+        $this->request = $request;
+
         foreach ($this->routes as $controller => $routes) {
             /** @var Route $route */
             foreach ($routes as $route) {
@@ -46,7 +48,7 @@ class Dispatcher
 
     #[NoReturn] private function executeRoute(string $controller, Route $route, array $params = []): void
     {
-        $controller = new $controller();
+        $controller = new $controller($this->request);
         $methodName = $route->getMethodName();
 
         if ($route->isMutable()) {
@@ -65,8 +67,6 @@ class Dispatcher
         if (!is_subclass_of($controller, Controller::class)) {
             throw new InvalidArgumentException("$controller is not a Controller");
         }
-
-        $this->controllers[] = $controller;
 
         $reflector = new ReflectionClass($controller);
         $methodsController = $reflector->getMethods(ReflectionMethod::IS_PUBLIC);

@@ -8,6 +8,5 @@ class IndexController extends Controller
     #[Route('GET', '/')]
     public function index(): void
     {
-        echo 'index';
     }
 }
