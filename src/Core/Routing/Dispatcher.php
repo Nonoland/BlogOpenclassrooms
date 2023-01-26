@@ -14,21 +14,18 @@ class Dispatcher
 
     private array $routes = [];
 
-    private string $currentRoute;
-
-    public function __construct()
-    {
-        $this->currentRoute = $_GET['path'];
-    }
-
-    #[NoReturn] public function dispatch(): void
+    #[NoReturn] public function dispatch(Request $request): void
     {
         foreach ($this->routes as $controller => $routes) {
             /** @var Route $route */
             foreach ($routes as $route) {
+                if (!in_array($request->getMethodHttp(), $route->getMethodsHttp())) {
+                    continue;
+                }
+
                 $result = preg_match(
                     $route->getRouteRegex(),
-                    $this->currentRoute,
+                    $request->getCurrentRoute(),
                     $matches
                 );
 
@@ -83,7 +80,7 @@ class Dispatcher
             }
 
             $attribute = $attributes[0];
-            $route = new Route($attribute->getArguments()[0], $method->getName());
+            $route = new Route($attribute->getArguments()[0], $attribute->getArguments()[1], $method->getName());
 
             $this->routes[$controller][] = $route;
         }

@@ -9,6 +9,7 @@ class Route {
     private string $route;
     private string $routeRegex;
 
+    private array $methodsHttp;
     private string $methodName;
 
     private bool $mutable = false;
@@ -18,18 +19,31 @@ class Route {
     private const REGEX_INT = "[\d+]+";
     private const REGEX_STRING = "[a-zA-Z]+[a-zA-Z-0-9-_]+";
 
-    public function __construct(string $route, string $methodName) {
+    public function __construct(string|array $methodsHttp, string $route, string $methodName = '') {
         $this->route = $route;
         $this->routeRegex = '/^'.str_replace('/', '\/', $this->route).'$/';
 
         $this->methodName = $methodName;
+
+        if (is_string($methodsHttp)) {
+            $this->methodsHttp[] = $methodsHttp;
+        } else {
+            $this->methodsHttp = $methodsHttp;
+        }
 
         $this->loadRegex();
     }
 
     private function loadRegex(): void
     {
-        $regexResult = preg_match_all($this->regexPattern, $this->route, $matches, PREG_SET_ORDER, 0);
+        $regexResult = preg_match_all(
+            $this->regexPattern,
+            $this->route,
+            $matches,
+            PREG_SET_ORDER,
+            0
+        );
+
         if (empty($matches)) {
             return;
         }
@@ -73,5 +87,10 @@ class Route {
     public function getMethodName(): string
     {
         return $this->methodName;
+    }
+
+    public function getMethodsHttp(): array
+    {
+        return $this->methodsHttp;
     }
 }

@@ -5,7 +5,7 @@ use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
 
 class IndexController extends Controller
 {
-    #[Route('/')]
+    #[Route('GET', '/')]
     public function index()
     {
         echo 'index';
