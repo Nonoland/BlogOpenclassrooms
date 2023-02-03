@@ -1,26 +1,27 @@
 {
-    "name": "nolandartois/blog-openclassrooms",
-    "description": "Blog project for Open Classrooms",
-    "license" : "GPL-3.0-only",
-    "type": "project",
-    "autoload": {
-        "psr-4": {
-            "Nolandartois\\BlogOpenclassrooms\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Nolan Dartois",
-            "email": "dartois.nolan.pro@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require-dev": {
-        "squizlabs/php_codesniffer": "*",
-        "symfony/var-dumper": "^6.2"
-    },
-    "require": {
-        "twig/twig": "^2.0",
-        "ext-http": "*"
+  "name": "nolandartois/blog-openclassrooms",
+  "description": "Blog project for Open Classrooms",
+  "license": "GPL-3.0-only",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Nolandartois\\BlogOpenclassrooms\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Nolan Dartois",
+      "email": "dartois.nolan.pro@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*",
+    "symfony/var-dumper": "^6.2"
+  },
+  "require": {
+    "twig/twig": "^2.0",
+    "ext-http": "*",
+    "ext-pdo": "*"
+  }
 }

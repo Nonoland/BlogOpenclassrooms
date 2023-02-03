@@ -5,6 +5,7 @@ use Exception;
 use InvalidArgumentException;
 use JetBrains\PhpStorm\NoReturn;
 use Nolandartois\BlogOpenclassrooms\Controllers\Controller;
+use Nolandartois\BlogOpenclassrooms\Core\Config\Config;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -12,7 +13,6 @@ use ReflectionMethod;
 class Dispatcher
 {
     private array $routes = [];
-
     private Request $request;
 
     #[NoReturn] public function dispatch(Request $request): void
