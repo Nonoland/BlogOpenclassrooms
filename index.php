@@ -7,6 +7,9 @@ use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
 
 require 'vendor/autoload.php';
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 $request = new Request();
 $dispatcher = new Dispatcher();
 

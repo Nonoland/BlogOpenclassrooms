@@ -10,8 +10,6 @@ class IndexController extends Controller
     {
         $templates = $this->getTwig()->load('index.twig');
 
-        dump($params);
-
         echo $templates->render();
     }
 

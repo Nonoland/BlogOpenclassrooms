@@ -32,8 +32,6 @@ class Route {
         }
 
         $this->loadRegex();
-
-        dump($this->routeRegex);
     }
 
     private function loadRegex(): void

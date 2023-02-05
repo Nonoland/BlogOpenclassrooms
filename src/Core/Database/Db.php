@@ -23,12 +23,10 @@ class Db
     {
         $this->persistant = $persistant;
 
-        $configInfo = Config::getDatabaseInfo();
-
-        $this->hostname = $configInfo['hostname'];
-        $this->username = $configInfo['username'];
-        $this->password = $configInfo['password'];
-        $this->dbname = $configInfo['dbname'];
+        $this->hostname = $_ENV['DB_HOSTNAME'];
+        $this->username = $_ENV['DB_USERNAME'];
+        $this->password = $_ENV['DB_PASSWORD'];
+        $this->dbname = $_ENV['DB_NAME'];
 
         $this->connectToDb();
     }

@@ -21,7 +21,7 @@
   },
   "require": {
     "twig/twig": "^2.0",
-    "ext-http": "*",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "vlucas/phpdotenv": "^5.5"
   }
 }
