@@ -5,17 +5,17 @@ use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
 
 class IndexController extends Controller
 {
-    #[Route('GET', '/article/{id:int}/{slug:string}')]
-    public function index($params): void
+    #[Route('GET', '/')]
+    public function index(): void
     {
-        $templates = $this->getTwig()->load('index.twig');
+        $templates = $this->getTwig()->load('front/home.twig');
 
         echo $templates->render();
     }
 
-    #[Route('GET', '/article')]
-    public function article()
+    #[Route('GET', '/404')]
+    public function page404(): void
     {
-
-}
+        echo '404';
+    }
 }
