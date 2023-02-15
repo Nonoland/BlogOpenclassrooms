@@ -12,6 +12,8 @@ class Route {
     private array $methodsHttp;
     private string $methodName;
 
+    private string $routeName;
+
     private bool $mutable = false;
 
     private string $regexPattern = "/\{[a-zA-Z1-9--_]+\}/m";
@@ -19,7 +21,7 @@ class Route {
     private const REGEX_INT = "[\d+]+";
     private const REGEX_STRING = "[a-zA-Z]+[a-zA-Z-0-9-_]+";
 
-    public function __construct(string|array $methodsHttp, string $route, string $methodName = '') {
+    public function __construct(string|array $methodsHttp, string $route, string $methodName = '', string $routeName = '') {
         $this->route = $route;
         $this->routeRegex = '/^'.str_replace('/', '\/', $this->route).'$/';
 
@@ -32,6 +34,29 @@ class Route {
         }
 
         $this->loadRegex();
+
+        if (empty($routeName)) {
+            $routeName = $this->route;
+
+            if ($routeName[0] == '/') {
+                $routeName = substr($routeName, 1);
+            }
+            $routeName = str_replace('/', '_', $routeName);
+
+            preg_match_all(
+                $this->regexPattern,
+                $this->route,
+                $matches,
+                PREG_SET_ORDER,
+                0
+            );
+
+            if (empty($routeName)) {
+                $routeName = 'index';
+            }
+
+            $this->routeName = $routeName;
+        }
     }
 
     private function loadRegex(): void
