@@ -102,6 +102,8 @@ abstract class ObjectModel
         if ($this->id === 0) {
             return false;
         }
+
+
     }
 
     /**

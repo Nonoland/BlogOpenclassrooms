@@ -4,3 +4,4 @@
 /.lando/
 
 .env
+/tools/
