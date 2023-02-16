@@ -5,7 +5,7 @@ use Nolandartois\BlogOpenclassrooms\Controllers\PostController;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
 
-require 'vendor/autoload.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();

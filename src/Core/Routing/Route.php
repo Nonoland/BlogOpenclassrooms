@@ -21,7 +21,12 @@ class Route {
     private const REGEX_INT = "[\d+]+";
     private const REGEX_STRING = "[a-zA-Z]+[a-zA-Z-0-9-_]+";
 
-    public function __construct(string|array $methodsHttp, string $route, string $methodName = '', string $routeName = '') {
+    public function __construct(
+        string|array $methodsHttp,
+        string $route,
+        string $methodName = '',
+        string $routeName = ''
+    ) {
         $this->route = $route;
         $this->routeRegex = '/^'.str_replace('/', '\/', $this->route).'$/';
 

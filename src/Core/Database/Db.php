@@ -46,7 +46,7 @@ class Db
         return $this->pdo->query('show tables;')->fetchAll();
     }
 
-    public function select(string $tableName, string $where = '', array $values = [])
+    public function select(string $tableName, string $where = '', array $values = []): false|array
     {
         $select = '*';
 
@@ -73,14 +73,14 @@ class Db
             $tableName,
             implode(', ', array_keys($values)),
             implode(', ', array_map(
-                function (string $name) {
-                    return ":$name";
-                }, array_keys($values))
+                    function (string $name) {
+                        return ":$name";
+                    }, array_keys($values))
             )
         );
 
         $prepare = $this->pdo->prepare(
-           $prepare
+            $prepare
         );
 
         foreach ($values as $name => &$value) {
@@ -90,7 +90,7 @@ class Db
         return $prepare->execute();
     }
 
-    public function update(string $tableName, array $values, string $where)
+    public function update(string $tableName, array $values, string $where): bool
     {
         $prepare = sprintf(
             "UPDATE %s SET %s WHERE %s",
@@ -110,10 +110,10 @@ class Db
             $prepare
         );
 
-        $prepare->execute();
+        return $prepare->execute();
     }
 
-    public function delete(string $tableName, string $where)
+    public function delete(string $tableName, string $where): bool
     {
         $prepare = sptrinf(
             "DELETE FROM %s WHERE %s",
@@ -125,20 +125,21 @@ class Db
             $prepare
         );
 
-        $prepare->execute();
+        return $prepare->execute();
     }
 
-    public function query(string $sql) {
+    public function query(string $sql): false|PDOStatement
+    {
         return $this->pdo->prepare($sql);
     }
 
-    public function close()
+    public function close(): void
     {
         $this->pdo = null;
         $this->query = null;
     }
 
-    public function getPDO()
+    public function getPDO(): PDO
     {
         return $this->pdo;
     }
