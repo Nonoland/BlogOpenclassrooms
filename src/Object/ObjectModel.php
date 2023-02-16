@@ -71,7 +71,7 @@ abstract class ObjectModel
         return $dbInstance->insert(static::$definitions['table'], $data);
     }
 
-    public function update()
+    public function update(): bool
     {
         $dbInstance = Db::getInstance();
 
@@ -128,7 +128,7 @@ abstract class ObjectModel
         return $this->dateUpd;
     }
 
-    protected function snakeToCamel(string $value)
+    protected function snakeToCamel(string $value): string
     {
         return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $value))));
     }
