@@ -1,7 +1,7 @@
 <?php
 namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
-class AdminController extends Controller
+class FrontController extends Controller
 {
 
     protected function loadTwigVariables()

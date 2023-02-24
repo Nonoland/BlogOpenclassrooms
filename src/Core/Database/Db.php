@@ -115,7 +115,7 @@ class Db
 
     public function delete(string $tableName, string $where): bool
     {
-        $prepare = sptrinf(
+        $prepare = sprintf(
             "DELETE FROM %s WHERE %s",
             $tableName,
             $where

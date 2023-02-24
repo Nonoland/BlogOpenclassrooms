@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8"/>
@@ -11,15 +11,16 @@
           type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
           rel="stylesheet" type="text/css"/>
-    <link href="/public/assets/css/styles.css" rel="stylesheet"/>
+    <link href="/public/assets/css/front/styles.css" rel="stylesheet"/>
+    <link rel="manifest" href="public/manifest.webmanifest" />
 </head>
 <body>
-{% include '_partials/navbar.twig' %}
-{% include '_partials/header.twig' %}
+{% include '/front/_partials/navbar.twig' %}
+{% include '/front/_partials/header.twig' %}
 
 {% block page_content %}{% endblock %}
 
-{% include '_partials/footer.twig' %}
-{% include '_partials/javascripts.twig' %}
+{% include '/front/_partials/footer.twig' %}
+{% include '/front/_partials/javascripts.twig' %}
 </body>
 </html>

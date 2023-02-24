@@ -1,7 +1,8 @@
 <?php
 
-use Nolandartois\BlogOpenclassrooms\Controllers\IndexController;
-use Nolandartois\BlogOpenclassrooms\Controllers\PostController;
+use Nolandartois\BlogOpenclassrooms\Controllers\Admin\DashboardController;
+use Nolandartois\BlogOpenclassrooms\Controllers\Front\IndexController;
+use Nolandartois\BlogOpenclassrooms\Controllers\Front\PostController;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
 
@@ -15,5 +16,6 @@ $dispatcher = new Dispatcher();
 
 $dispatcher->registerController(IndexController::class);
 $dispatcher->registerController(PostController::class);
+$dispatcher->registerController(DashboardController::class);
 
 $dispatcher->dispatch($request);
