@@ -54,17 +54,17 @@ abstract class ObjectModel
         $dbInstance = Db::getInstance();
 
         $data = [];
-        foreach (static::$definitions['values'] as $valueName) {
-            $camelName = $this->snakeToCamel($valueName);
+        foreach (static::$definitions['values'] as $nameValue => $parameters) {
+            $camelName = $this->snakeToCamel($nameValue);
 
             if (!property_exists(get_class($this), $camelName)) {
                 continue;
             }
 
             if (is_array($this->{$camelName})) {
-                $data[$valueName] = json_encode($this->{$camelName});
+                $data[$nameValue] = json_encode($this->{$camelName});
             } else {
-                $data[$valueName] = $this->{$camelName};
+                $data[$nameValue] = $this->{$camelName};
             }
         }
 
@@ -103,7 +103,7 @@ abstract class ObjectModel
             return false;
         }
 
-
+        return Db::getInstance()->delete(static::$definitions['table'], "id = ".$this->id);
     }
 
     /**

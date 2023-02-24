@@ -22,6 +22,7 @@
   "require": {
     "twig/twig": "^2.0",
     "ext-pdo": "*",
-    "vlucas/phpdotenv": "^5.5"
+    "vlucas/phpdotenv": "^5.5",
+    "scssphp/scssphp": "^1.11"
   }
 }

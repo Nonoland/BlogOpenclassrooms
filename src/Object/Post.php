@@ -6,8 +6,8 @@ class Post extends ObjectModel
 {
 
     public static array $definitions = [
-        'table' => 'comment',
-        'value' => [
+        'table' => 'post',
+        'values' => [
             'title' => [],
             'body' => [],
             'views' => [],
@@ -15,10 +15,10 @@ class Post extends ObjectModel
         ]
     ];
 
-    protected string $title;
-    protected string $body;
-    protected int $views;
-    protected int $idUser;
+    protected string $title = "";
+    protected string $body = "";
+    protected int $views = 0;
+    protected int $idUser = 0;
 
     /**
      * @return string
@@ -82,10 +82,5 @@ class Post extends ObjectModel
     public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
-    }
-
-    public static function getPosts()
-    {
-
     }
 }
