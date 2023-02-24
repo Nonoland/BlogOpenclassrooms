@@ -7,12 +7,12 @@ class Configuration
     public static function getConfiguration(string $name)
     {
         $dbInstance = Db::getInstance();
-        $query = $dbInstance->select('configuration', "name = $name");
-        if (!$query) {
+        $query = $dbInstance->select('configuration', "name = \"$name\"", ['value']);
+        if (!$query || empty($query)) {
             return false;
         }
 
-        return $query['value'];
+        return $query[0]['value'];
     }
 
     public static function setConfiguration(string $name, mixed $value)
