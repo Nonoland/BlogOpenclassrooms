@@ -5,7 +5,7 @@ use lamp;
 create table configuration
 (
     id int unsigned auto_increment primary key,
-    name varchar(264) not null,
+    name varchar(264) not null unique,
     value text,
     date_add datetime not null default current_timestamp on update current_timestamp,
     date_upd datetime not null default current_timestamp on update current_timestamp
