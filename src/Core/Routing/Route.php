@@ -48,14 +48,6 @@ class Route {
             }
             $routeName = str_replace('/', '_', $routeName);
 
-            preg_match_all(
-                $this->regexPattern,
-                $this->route,
-                $matches,
-                PREG_SET_ORDER,
-                0
-            );
-
             if (empty($routeName)) {
                 $routeName = 'index';
             }

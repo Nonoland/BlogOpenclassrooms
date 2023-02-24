@@ -18,12 +18,14 @@ class AdminPostController extends AdminController
     #[Route(['GET', 'POST'], '/admin/posts/new')]
     public function postNew()
     {
-        if (isset($_POST['post_submit']) &&
-            isset($_POST['post_title']) &&
-            isset($_POST['post_body'])) {
+        $request = $this->getRequest();
+
+        if ($request->getIsset('post_submit') &&
+            $request->getIsset('post_title') &&
+            $request->getIsset('post_body')) {
             $post = new Post();
-            $post->setTitle($_POST['post_title']);
-            $post->setBody($_POST['post_body']);
+            $post->setTitle($request->getValuePost('post_title'));
+            $post->setBody($request->getValuePost('post_body'));
             $post->setIdUser(1);
             $post->add();
         }

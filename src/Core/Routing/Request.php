@@ -22,4 +22,27 @@ class Request
     {
         return $this->methodHttp;
     }
+
+    public function getIsset(string $key): bool
+    {
+        return isset($_POST[$key]) || isset($_GET[$key]);
+    }
+
+    public function getValuePost(string $name): string
+    {
+        return $this->sanitizeData($_POST[$name]);
+    }
+
+    public function getValueGet(string $name): string
+    {
+        return $this->sanitizeData($_GET[$name]);
+    }
+
+    public function sanitizeData(string $value): string
+    {
+        $value = trim($value);
+        $value = htmlspecialchars($value);
+
+        return $value;
+    }
 }
