@@ -3,8 +3,8 @@
 namespace Nolandartois\BlogOpenclassrooms\Controllers\Admin;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
+use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
-use Nolandartois\BlogOpenclassrooms\Object\Post;
 
 class AdminPostController extends AdminController
 {

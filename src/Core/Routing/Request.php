@@ -40,6 +40,10 @@ class Request
 
     public function sanitizeData(string $value): string
     {
+        if (!$value) {
+            return $value;
+        }
+
         $value = trim($value);
         $value = htmlspecialchars($value);
 

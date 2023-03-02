@@ -1,8 +1,6 @@
 <?php
 
-namespace Nolandartois\BlogOpenclassrooms\Object;
-
-use DateTime;
+namespace Nolandartois\BlogOpenclassrooms\Core\Object;
 
 class User extends ObjectModel
 {

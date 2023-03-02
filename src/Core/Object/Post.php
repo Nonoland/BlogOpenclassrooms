@@ -1,6 +1,6 @@
 <?php
 
-namespace Nolandartois\BlogOpenclassrooms\Object;
+namespace Nolandartois\BlogOpenclassrooms\Core\Object;
 
 class Post extends ObjectModel
 {
