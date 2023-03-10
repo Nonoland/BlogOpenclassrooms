@@ -1,14 +1,14 @@
 {% extends '/admin/page.twig' %}
 
 {% block page_title %}
-    Articles - Ecrire un nouvel article
+    Articles - Modifier un article
 {% endblock %}
 
 {% block page_content %}
     <form action="" method="post" class="form">
         <div class="form_group">
             <label for="post_title">Titre de l'article</label>
-            <input type="text" name="post_title" id="post_title" required>
+            <input type="text" name="post_title" id="post_title" value="{{ post.title }}" required>
         </div>
         <div class="form_group">
             <label for="post_description">Description de l'article</label>
@@ -16,7 +16,7 @@
         </div>
         <div class="form_group">
             <label for="post_body">Texte de l'article</label>
-            <textarea name="post_body" id="post_body" cols="30" rows="10" required></textarea>
+            <textarea name="post_body" id="post_body" cols="30" rows="10" required>{{ post.body }}</textarea>
         </div>
         <button type="submit" name="post_submit">Enregistrer</button>
     </form>
