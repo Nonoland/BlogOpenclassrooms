@@ -3,6 +3,7 @@
 namespace Nolandartois\BlogOpenclassrooms\Controllers\Front;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
+use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
 
 class IndexController extends FrontController
@@ -10,9 +11,12 @@ class IndexController extends FrontController
     #[Route('GET', '/')]
     public function index(): void
     {
-        $templates = $this->getTwig()->load('front/home/home.twig');
+        $posts = Post::getAllPosts();
 
-        echo $templates->render();
+        $templates = $this->getTwig()->load('front/home/home.twig');
+        echo $templates->render([
+            'posts' => $posts
+        ]);
     }
 
     #[Route('GET', '/404')]
