@@ -2,6 +2,8 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Object;
 
+use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
+
 class User extends ObjectModel
 {
     public static array $definitions = [
@@ -22,6 +24,11 @@ class User extends ObjectModel
     protected string $email = "";
     protected string $password = "";
     protected array $roles = [];
+
+    public static function getAllUsers()
+    {
+        return Db::getInstance()->select(self::$definitions['table']);
+    }
 
     /**
      * @return string
@@ -100,7 +107,7 @@ class User extends ObjectModel
      */
     public function setPassword(string $password): void
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
     /**

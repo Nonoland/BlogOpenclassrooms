@@ -49,7 +49,7 @@ class AdminPostController extends AdminController
     public function postEdit(array $params): void
     {
         if (!$post = new Post($params['id_post'])) {
-            return;
+            $this->redirect('/admin/posts');
         }
 
         $request = $this->getRequest();
@@ -63,6 +63,8 @@ class AdminPostController extends AdminController
             $post->setDescription($request->getValuePost('post_description'));
             $post->setBody($request->getValuePost('post_body'));
             $post->update();
+
+            $this->redirect('/admin/posts');
         }
 
         $template = $this->getTwig()->load('admin/posts/edit.twig');

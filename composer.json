@@ -23,7 +23,8 @@
     "twig/twig": "^2.0",
     "ext-pdo": "*",
     "vlucas/phpdotenv": "^5.5",
-    "scssphp/scssphp": "^1.11"
+    "scssphp/scssphp": "^1.11",
+    "defuse/php-encryption": "^2.3"
   },
   "scripts": {
     "phpstan": "vendor/bin/phpstan -c phpstan.neon"

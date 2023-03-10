@@ -1,0 +1,41 @@
+{% extends '/admin/page.twig' %}
+
+{% block page_title %}
+    Liste des utilisateurs
+{% endblock %}
+
+{% block page_content %}
+    <section class="list">
+        <header class="tools">
+            <a href="{{ route('admin_users_new') }}">Nouveau utilisateur</a>
+        </header>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td style="text-align: center">{{ user.id }}</td>
+                    <td style="text-align: center">{{ user.lastname }}</td>
+                    <td style="text-align: center">{{ user.firstname }}</td>
+                    <td style="text-align: center">{{ user.email }}</td>
+                    <td style="text-align: center">{{ user.roles }}</td>
+                    <td style="text-align: center"><a href="/admin/users/edit/{{ user.id }}">Editer</a><a href="/admin/users/delete/{{ user.id }}">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </section>
+
+{% endblock %}
