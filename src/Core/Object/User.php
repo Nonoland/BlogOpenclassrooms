@@ -11,6 +11,7 @@ class User extends ObjectModel
             'lastname' => [],
             'firstname' => [],
             'email' => [],
+            'password' => [],
             'roles' => []
         ]
     ];
@@ -19,6 +20,7 @@ class User extends ObjectModel
     protected string $lastname = "";
     protected string $firstname = "";
     protected string $email = "";
+    protected string $password = "";
     protected array $roles = [];
 
     /**
@@ -83,6 +85,22 @@ class User extends ObjectModel
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 
     /**

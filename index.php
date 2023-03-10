@@ -3,6 +3,7 @@
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminPostController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\DashboardController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\DevelopmentController;
+use Nolandartois\BlogOpenclassrooms\Controllers\Front\AuthController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Front\IndexController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Front\PostController;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
@@ -31,6 +32,7 @@ $request = new Request();
 $dispatcher = new Dispatcher();
 
 $dispatcher->registerController(IndexController::class);
+$dispatcher->registerController(AuthController::class);
 $dispatcher->registerController(PostController::class);
 $dispatcher->registerController(DashboardController::class);
 $dispatcher->registerController(AdminPostController::class);

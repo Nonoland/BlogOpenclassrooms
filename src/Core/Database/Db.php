@@ -16,8 +16,6 @@ class Db
 
     private bool $persistant;
 
-    private PDOStatement $query;
-
     public function __construct(bool $persistant)
     {
         $this->persistant = $persistant;
@@ -140,7 +138,6 @@ class Db
     public function close(): void
     {
         $this->pdo = null;
-        $this->query = null;
     }
 
     public function getPDO(): PDO

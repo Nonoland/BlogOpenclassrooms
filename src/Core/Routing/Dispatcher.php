@@ -16,7 +16,7 @@ class Dispatcher
     private array $routes = [];
     private Request $request;
 
-    #[NoReturn] public function dispatch(Request $request): void
+    public function dispatch(Request $request): void
     {
         $this->request = $request;
 
@@ -47,7 +47,7 @@ class Dispatcher
         header('HTTP/1.0 404 Not Found');
     }
 
-    #[NoReturn] private function executeRoute(string $controller, Route $route, array $params = []): void
+    private function executeRoute(string $controller, Route $route, array $params = []): void
     {
         $controller = new $controller($this->request, $this);
         $methodName = $route->getMethodName();

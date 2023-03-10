@@ -27,6 +27,7 @@ create table user
     lastname varchar(254) not null,
     firstname varchar(254) not null,
     email varchar(254) not null,
+    password text not null,
     role text not null,
     date_add datetime not null default current_timestamp on update current_timestamp,
     date_upd datetime not null default current_timestamp on update current_timestamp

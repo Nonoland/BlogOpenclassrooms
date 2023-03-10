@@ -16,13 +16,16 @@
   ],
   "minimum-stability": "stable",
   "require-dev": {
-    "squizlabs/php_codesniffer": "*",
-    "symfony/var-dumper": "^6.2"
+    "symfony/var-dumper": "^6.2",
+    "phpstan/phpstan": "^1.10"
   },
   "require": {
     "twig/twig": "^2.0",
     "ext-pdo": "*",
     "vlucas/phpdotenv": "^5.5",
     "scssphp/scssphp": "^1.11"
+  },
+  "scripts": {
+    "phpstan": "vendor/bin/phpstan -c phpstan.neon"
   }
 }

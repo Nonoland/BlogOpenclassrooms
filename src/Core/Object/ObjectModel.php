@@ -19,14 +19,14 @@ abstract class ObjectModel
     public function __construct(int $id = 0)
     {
         if ($id === 0) {
-            return false;
+            return;
         }
 
         $dbInstance = Db::getInstance();
         $result = $dbInstance->select(static::$definitions['table'], "id = $id");
 
         if (empty($result)) {
-            return false;
+            return;
         }
         $result = $result[0];
 
