@@ -2,7 +2,6 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Database;
 
-use Nolandartois\BlogOpenclassrooms\Core\Config\Config;
 use PDO;
 use PDOStatement;
 
@@ -46,7 +45,7 @@ class Db
         return $this->pdo->query('show tables;')->fetchAll();
     }
 
-    public function select(string $tableName, string $where = '', array $values = []): false|array
+    public function select(string $tableName, string $where = '', array $values = [], $orderBy = ''): false|array
     {
         $select = '*';
 
@@ -54,11 +53,11 @@ class Db
             $select = implode(', ', $values);
         }
 
-        $prepare = sprintf(
-            "SELECT %s FROM %s%s",
+        $prepare = sprintf("SELECT %s FROM %s%s%s",
             $select,
             $tableName,
-            strlen($where) > 0 ? " WHERE $where" : ''
+            strlen($where) > 0 ? " WHERE $where" : '',
+            strlen($orderBy) > 0 ? " ORDER BY $orderBy" : ''
         );
 
         $prepare = $this->pdo->query($prepare, PDO::FETCH_ASSOC);
