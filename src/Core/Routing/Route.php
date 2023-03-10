@@ -126,4 +126,9 @@ class Route {
     {
         return $this->methodsHttp;
     }
+
+    public function getRouteName(): string
+    {
+        return $this->routeName;
+    }
 }
