@@ -1,4 +1,5 @@
 <?php
+
 namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 
 use Exception;

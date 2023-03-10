@@ -24,6 +24,12 @@ class Post extends ObjectModel
     protected int $views = 0;
     protected int $idUser = 0;
 
+    public static function getAllPosts(): array
+    {
+        $dbInstance = Db::getInstance();
+        return $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
+    }
+
     /**
      * @return string
      */
@@ -102,11 +108,5 @@ class Post extends ObjectModel
     public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
-    }
-
-    public static function getAllPosts(): array
-    {
-        $dbInstance = Db::getInstance();
-        return $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
     }
 }

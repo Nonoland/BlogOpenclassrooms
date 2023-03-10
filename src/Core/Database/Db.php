@@ -40,9 +40,19 @@ class Db
         );
     }
 
+    public static function getInstance(bool $persistant = false): Db
+    {
+        return new Db($persistant);
+    }
+
     public function getTables(): array
     {
         return $this->pdo->query('show tables;')->fetchAll();
+    }
+
+    public function query(string $sql): false|PDOStatement
+    {
+        return $this->pdo->prepare($sql);
     }
 
     public function select(string $tableName, string $where = '', array $values = [], $orderBy = ''): false|array
@@ -127,11 +137,6 @@ class Db
         return $prepare->execute();
     }
 
-    public function query(string $sql): false|PDOStatement
-    {
-        return $this->pdo->prepare($sql);
-    }
-
     public function close(): void
     {
         $this->pdo = null;
@@ -141,10 +146,5 @@ class Db
     public function getPDO(): PDO
     {
         return $this->pdo;
-    }
-
-    public static function getInstance(bool $persistant = false): Db
-    {
-        return new Db($persistant);
     }
 }

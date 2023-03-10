@@ -1,4 +1,5 @@
 <?php
+
 namespace Nolandartois\BlogOpenclassrooms\Core\Twig;
 
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;

@@ -33,11 +33,6 @@ class Request
         return $this->sanitizeData($_POST[$name]);
     }
 
-    public function getValueGet(string $name): string
-    {
-        return $this->sanitizeData($_GET[$name]);
-    }
-
     public function sanitizeData(string $value): string
     {
         if (!$value) {
@@ -48,5 +43,10 @@ class Request
         $value = htmlspecialchars($value);
 
         return $value;
+    }
+
+    public function getValueGet(string $name): string
+    {
+        return $this->sanitizeData($_GET[$name]);
     }
 }

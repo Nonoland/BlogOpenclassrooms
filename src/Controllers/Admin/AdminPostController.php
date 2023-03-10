@@ -8,6 +8,8 @@ use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
 
 class AdminPostController extends AdminController
 {
+
+
     #[Route('GET', '/admin/posts')]
     public function indexPosts(): void
     {

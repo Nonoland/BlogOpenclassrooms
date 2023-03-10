@@ -1,34 +1,33 @@
 <?php
+
 namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 
 use Attribute;
+use InvalidArgumentException;
 
 #[Attribute]
-class Route {
-
-    private string $route;
-    private string $routeRegex;
-
-    private array $methodsHttp;
-    private string $methodName;
-
-    private string $routeName;
-
-    private bool $mutable = false;
-
-    private string $regexPattern = "/\{[a-zA-Z1-9--_]+\}/m";
+class Route
+{
 
     private const REGEX_INT = "[\d+]+";
     private const REGEX_STRING = "[a-zA-Z]+[a-zA-Z-0-9-_]+";
+    private string $route;
+    private string $routeRegex;
+    private array $methodsHttp;
+    private string $methodName;
+    private string $routeName;
+    private bool $mutable = false;
+    private string $regexPattern = "/\{[a-zA-Z1-9--_]+\}/m";
 
     public function __construct(
         string|array $methodsHttp,
-        string $route,
-        string $methodName = '',
-        string $routeName = ''
-    ) {
+        string       $route,
+        string       $methodName = '',
+        string       $routeName = ''
+    )
+    {
         $this->route = $route;
-        $this->routeRegex = '/^'.str_replace('/', '\/', $this->route).'$/';
+        $this->routeRegex = '/^' . str_replace('/', '\/', $this->route) . '$/';
 
         $this->methodName = $methodName;
 
@@ -73,7 +72,7 @@ class Route {
         $this->mutable = true;
 
         foreach ($matches as $match) {
-            $tmp = explode(':', substr($match[0], 1, strlen($match[0])-2));
+            $tmp = explode(':', substr($match[0], 1, strlen($match[0]) - 2));
 
             switch ($tmp[1]) {
                 case "int":
@@ -92,7 +91,7 @@ class Route {
                     );
                     break;
                 default:
-                    throw new \InvalidArgumentException("Type $tmp[1] not exist for route regex");
+                    throw new InvalidArgumentException("Type $tmp[1] not exist for route regex");
             }
         }
     }

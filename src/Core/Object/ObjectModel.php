@@ -7,16 +7,14 @@ use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 
 abstract class ObjectModel
 {
+    const DATE_FORMAT = 'Y-m-d H:i:s';
     public static array $definitions = [
         'table' => '',
         'values' => []
     ];
-
     protected int $id = 0;
     protected DateTime $dateAdd;
     protected DateTime $dateUpd;
-
-    const DATE_FORMAT = 'Y-m-d H:i:s';
 
     public function __construct(int $id = 0)
     {
@@ -47,6 +45,11 @@ abstract class ObjectModel
                 $this->{$name} = $value;
             }
         }
+    }
+
+    protected function snakeToCamel(string $value): string
+    {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $value))));
     }
 
     public function add(): bool
@@ -107,7 +110,7 @@ abstract class ObjectModel
             return false;
         }
 
-        return Db::getInstance()->delete(static::$definitions['table'], "id = ".$this->id);
+        return Db::getInstance()->delete(static::$definitions['table'], "id = " . $this->id);
     }
 
     /**
@@ -132,10 +135,5 @@ abstract class ObjectModel
     public function getDateUpd(): DateTime
     {
         return $this->dateUpd;
-    }
-
-    protected function snakeToCamel(string $value): string
-    {
-        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $value))));
     }
 }
