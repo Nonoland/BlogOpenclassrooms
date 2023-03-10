@@ -21,14 +21,14 @@ abstract class ObjectModel
     public function __construct(int $id = 0)
     {
         if ($id === 0) {
-            return;
+            return false;
         }
 
         $dbInstance = Db::getInstance();
         $result = $dbInstance->select(static::$definitions['table'], "id = $id");
 
         if (empty($result)) {
-            return;
+            return false;
         }
         $result = $result[0];
 
@@ -73,6 +73,10 @@ abstract class ObjectModel
 
     public function update(): bool
     {
+        if ($this->id === 0) {
+            return false;
+        }
+
         $dbInstance = Db::getInstance();
 
         $data = [];

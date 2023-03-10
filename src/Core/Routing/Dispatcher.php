@@ -48,7 +48,7 @@ class Dispatcher
 
     #[NoReturn] private function executeRoute(string $controller, Route $route, array $params = []): void
     {
-        $controller = new $controller($this->request);
+        $controller = new $controller($this->request, $this);
         $methodName = $route->getMethodName();
 
         if ($route->isMutable()) {
