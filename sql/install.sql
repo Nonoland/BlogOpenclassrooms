@@ -44,6 +44,7 @@ create table post
 (
     id int(10) unsigned auto_increment primary key,
     title text not null,
+    description text not null,
     body text not null,
     date_add datetime not null default current_timestamp on update current_timestamp,
     date_upd datetime not null default current_timestamp on update current_timestamp,

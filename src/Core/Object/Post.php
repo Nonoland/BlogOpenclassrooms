@@ -2,6 +2,8 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Object;
 
+use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
+
 class Post extends ObjectModel
 {
 
@@ -9,6 +11,7 @@ class Post extends ObjectModel
         'table' => 'post',
         'values' => [
             'title' => [],
+            'description' => [],
             'body' => [],
             'views' => [],
             'id_user' => []
@@ -16,6 +19,7 @@ class Post extends ObjectModel
     ];
 
     protected string $title = "";
+    protected string $description = "";
     protected string $body = "";
     protected int $views = 0;
     protected int $idUser = 0;
@@ -34,6 +38,22 @@ class Post extends ObjectModel
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     /**
@@ -82,5 +102,11 @@ class Post extends ObjectModel
     public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
+    }
+
+    public static function getAllPosts(): array
+    {
+        $dbInstance = Db::getInstance();
+        return $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
     }
 }
