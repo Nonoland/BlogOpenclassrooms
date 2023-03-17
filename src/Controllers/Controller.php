@@ -28,6 +28,13 @@ abstract class Controller
         $this->loadTwigVariables();
     }
 
+    public function displayAjax(string $data)
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        echo $data;
+        exit();
+    }
+
     protected function loadTwigVariables()
     {
         $this->twig->addGlobal('phpVersion', phpversion());

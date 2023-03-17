@@ -21,28 +21,60 @@ class AdminPostController extends AdminController
         ]);
     }
 
-    #[Route(['GET', 'POST'], '/admin/posts/new')]
+    #[Route(['GET'], '/admin/posts/new')]
     public function postNew(): void
     {
+        $template = $this->getTwig()->load('admin/posts/new.twig');
+        echo $template->render();
+    }
+
+    #[Route(['POST'], '/admin/ajax/posts/new')]
+    public function postNewAjax(): void
+    {
+        $request = $this->getRequest();
+        if (!$request->getIsset('post_title')
+            || !$request->getIsset('post_description')
+            || !$request->getIsset('post_body')) {
+            $this->displayAjax(false);
+        }
+
+        $post = new Post();
+        $post->setIdUser(1);
+        $post->setDescription($request->getValuePost('post_description'));
+        $post->setBody($request->getValuePost('post_body'));
+        $post->setTitle($request->getValuePost('post_title'));
+        $post->add();
+
+        $this->displayAjax(true);
+    }
+
+    #[Route(['POST'], '/admin/ajax/posts/edit/{id_post:int}')]
+    public function postEditAjax(array $params): void
+    {
+        if (!$post = new Post($params['id_post'])) {
+            $this->displayAjax(false);
+        }
+
         $request = $this->getRequest();
 
-        if ($request->getIsset('post_submit') &&
-            $request->getIsset('post_description') &&
+        if ($request->getIsset('post_description') &&
             $request->getIsset('post_title') &&
             $request->getIsset('post_body')) {
 
-            $post = new Post();
             $post->setTitle($request->getValuePost('post_title'));
             $post->setDescription($request->getValuePost('post_description'));
-            $post->setBody($request->getValuePost('post_body'));
-            $post->setIdUser(1);
-            $post->add();
+            $post->setBody(
+                json_decode(
+                    htmlspecialchars_decode($request->getValuePost('post_body')),
+                    true
+                )
+            );
+            $post->update();
 
-            $this->redirect("/admin/posts");
+            $this->displayAjax(true);
         }
 
-        $template = $this->getTwig()->load('admin/posts/new.twig');
-        echo $template->render();
+        $this->displayAjax(false);
     }
 
     #[Route(['GET', 'POST'], '/admin/posts/edit/{id_post:int}')]
@@ -81,5 +113,4 @@ class AdminPostController extends AdminController
 
         $this->redirect('/admin/posts');
     }
-
 }

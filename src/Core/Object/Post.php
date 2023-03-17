@@ -2,6 +2,7 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Object;
 
+use DateTime;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 
 class Post extends ObjectModel
@@ -11,6 +12,7 @@ class Post extends ObjectModel
         'table' => 'post',
         'values' => [
             'title' => [],
+            'slug' => [],
             'description' => [],
             'body' => [],
             'views' => [],
@@ -19,15 +21,44 @@ class Post extends ObjectModel
     ];
 
     protected string $title = "";
+    protected string $slug = "";
     protected string $description = "";
-    protected string $body = "";
+    protected array $body = [];
     protected int $views = 0;
     protected int $idUser = 0;
+
+    public function __construct(int $id = 0)
+    {
+        parent::__construct($id);
+    }
 
     public static function getAllPosts(): array
     {
         $dbInstance = Db::getInstance();
         return $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
+    }
+
+    public static function getPostBySlug(string $slug): bool|Post
+    {
+        $dbInstance = Db::getInstance();
+        $result = $dbInstance->select(self::$definitions['table'], "slug LIKE '%$slug%'", [], '', 1);
+
+        if (empty($result)) {
+            return false;
+        }
+
+        $post = new Post();
+        $post->id = (int)$result[0]['id'];
+        $post->slug = $result[0]['slug'];
+        $post->title = $result[0]['title'];
+        $post->description = $result[0]['description'];
+        $post->body = json_decode(htmlspecialchars_decode($result[0]['body']), true);
+        $post->dateAdd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_add']);
+        $post->dateUpd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_upd']);
+        $post->views = (int)$result[0]['views'];
+        $post->idUser = (int)$result[0]['id_user'];
+
+        return $post;
     }
 
     /**
@@ -65,7 +96,7 @@ class Post extends ObjectModel
     /**
      * @return string
      */
-    public function getBody(): string
+    public function getBody(): array
     {
         return $this->body;
     }
@@ -73,7 +104,7 @@ class Post extends ObjectModel
     /**
      * @param string $body
      */
-    public function setBody(string $body): void
+    public function setBody(array $body): void
     {
         $this->body = $body;
     }

@@ -5,19 +5,24 @@
 {% endblock %}
 
 {% block page_content %}
-    <form action="" method="post" class="form">
+    <form action="" method="post" class="form" id="form_post" data-id="{{ post.id }}" data-action="edit" data-retarget-url="{{ route('admin_posts') }}">
         <div class="form_group">
             <label for="post_title">Titre de l'article</label>
             <input type="text" name="post_title" id="post_title" value="{{ post.title }}" required>
         </div>
         <div class="form_group">
             <label for="post_description">Description de l'article</label>
-            <textarea name="post_description" id="post_description" cols="30" rows="3" required>{{ post.body }}</textarea>
+            <textarea name="post_description" id="post_description" cols="30" rows="3" required>{{ post.description }}</textarea>
         </div>
         <div class="form_group">
             <label for="post_body">Texte de l'article</label>
-            <textarea name="post_body" id="post_body" cols="30" rows="10" required>{{ post.body }}</textarea>
+            <input type="hidden" name="post_body" value="{{ post.body|json_encode }}">
+            <div id="post_body"></div>
         </div>
         <button type="submit" name="post_submit">Enregistrer</button>
     </form>
+{% endblock %}
+
+{% block javascript %}
+    <script src="/public/assets/js/admin/admin_editor_post.js"></script>
 {% endblock %}

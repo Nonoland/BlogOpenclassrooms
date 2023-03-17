@@ -53,7 +53,7 @@ class Db
         return $this->pdo->prepare($sql);
     }
 
-    public function select(string $tableName, string $where = '', array $values = [], $orderBy = ''): false|array
+    public function select(string $tableName, string $where = '', array $values = [], string $orderBy = '', int $limit = -1): false|array
     {
         $select = '*';
 
@@ -61,11 +61,12 @@ class Db
             $select = implode(', ', $values);
         }
 
-        $prepare = sprintf("SELECT %s FROM %s%s%s",
+        $prepare = sprintf("SELECT %s FROM %s%s%s%s",
             $select,
             $tableName,
             strlen($where) > 0 ? " WHERE $where" : '',
-            strlen($orderBy) > 0 ? " ORDER BY $orderBy" : ''
+            strlen($orderBy) > 0 ? " ORDER BY $orderBy" : '',
+            $limit > 0 ? " LIMIT $limit" : ''
         );
 
         $prepare = $this->pdo->query($prepare, PDO::FETCH_ASSOC);

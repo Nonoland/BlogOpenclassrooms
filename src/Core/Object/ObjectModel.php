@@ -32,6 +32,7 @@ abstract class ObjectModel
 
         foreach ($result as $name => $value) {
             $name = $this->snakeToCamel($name);
+            $value = htmlspecialchars_decode($value);
 
             if (!property_exists(get_class($this), $name)) {
                 continue;
@@ -91,7 +92,7 @@ abstract class ObjectModel
             }
 
             if (is_array($this->{$camelName})) {
-                $data[$valueName] = json_encode($this->{$camelName});
+                $data[$valueName] = htmlspecialchars(json_encode($this->{$camelName}));
             } else {
                 $data[$valueName] = $this->{$camelName};
             }

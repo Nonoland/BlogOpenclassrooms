@@ -1,0 +1,39 @@
+{% extends '/front/page.twig' %}
+
+{% block page_content %}
+    <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="post-heading">
+                        <h1>{{ post.title }}</h1>
+                        <h2 class="subheading">{{ post.description }}</h2>
+                        <span class="meta">
+                                Ecrit par
+                                <a href="#!">{{ post.idUser }}</a>
+                                le {{ post.dateAdd|date('d/m/Y') }}
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% for block in post.body %}
+                    {% if block['type'] == 'header' %}
+                        <h{{ block['data']['level'] }}>{{ block['data']['text'] }}</h{{ block['data']['level'] }}>
+                    {% elseif block['type'] == 'paragraph' %}
+                        <p class="paragraph">{{ block['data']['text'] }}</p>
+                    {% elseif block['type'] == 'quote' %}
+                        <p class="quote"><cite>{{ block['data']['text'] }}</cite> par {{ block['data']['caption'] }}</p>
+                    {% elseif block['type'] == 'warning' %}
+
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block page_content %}
-    <form action="" method="post" class="form">
+    <form action="" method="post" class="form" id="form_post" data-action="new" data-retarget-url="{{ route('admin_posts') }}">
         <div class="form_group">
             <label for="post_title">Titre de l'article</label>
             <input type="text" name="post_title" id="post_title" required>
@@ -16,8 +16,14 @@
         </div>
         <div class="form_group">
             <label for="post_body">Texte de l'article</label>
-            <textarea name="post_body" id="post_body" cols="30" rows="10" required></textarea>
+            <input type="hidden" name="post_body">
+            <div id="post_body"></div>
+            {# <textarea name="post_body" id="post_body" cols="30" rows="10" required></textarea> #}
         </div>
         <button type="submit" name="post_submit">Enregistrer</button>
     </form>
+{% endblock %}
+
+{% block javascript %}
+    <script src="/public/assets/js/admin/admin_editor_post.js"></script>
 {% endblock %}
