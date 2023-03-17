@@ -17,8 +17,6 @@ class PostController extends FrontController
             $this->redirect('/');
         }
 
-        dump($post);
-
         $templates = $this->getTwig()->load('front/post/post.twig');
         echo $templates->render([
             'post' => $post
@@ -28,6 +26,15 @@ class PostController extends FrontController
     #[Route('GET', '/post/{id_post:int}')]
     public function showPostId(array $params): void
     {
-        echo 'int';
+        $post = Post::getPostById($params['id_post']);
+
+        if (!$post) {
+            $this->redirect('/');
+        }
+
+        $templates = $this->getTwig()->load('front/post/post.twig');
+        echo $templates->render([
+            'post' => $post
+        ]);
     }
 }
