@@ -24,10 +24,26 @@ class User extends ObjectModel
     protected string $email = "";
     protected string $password = "";
     protected array $roles = [];
+    protected bool $guest;
 
-    public static function getAllUsers()
+    public function __construct(int $id = 0)
     {
-        return Db::getInstance()->select(self::$definitions['table']);
+        parent::__construct($id);
+
+        if ($this->id == 0) {
+            $this->guest = true;
+        }
+
+        $this->guest = false;
+    }
+
+    public function add(): bool
+    {
+        if ($addResult = parent::add()) {
+            $this->id == 0 ? $this->guest = true : $this->guest = false;
+        }
+
+        return $addResult;
     }
 
     /**
@@ -129,5 +145,38 @@ class User extends ObjectModel
     public function addRoles(string $name): void
     {
         $this->roles[] = $name;
+    }
+
+    public function isGuest(): bool
+    {
+        return $this->guest;
+    }
+
+    public static function userExistByEmail(string $email): bool
+    {
+        $dbInstance = Db::getInstance();
+        $result = $dbInstance->select(self::$definitions['table'], "email LIKE '%$email%'", [], '', 1);
+
+        return !empty($result);
+    }
+
+    public static function getAllUsers()
+    {
+        return Db::getInstance()->select(self::$definitions['table']);
+    }
+
+    public static function getCookieKey(int $idUser): string|bool
+    {
+        $dbInstance = Db::getInstance();
+        $result = $dbInstance->select(
+            self::$definitions['table'],
+            "id = $idUser"
+        );
+
+        if (empty($result)) {
+            return false;
+        }
+
+        return $result[0]['cookie_key'];
     }
 }

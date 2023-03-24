@@ -1,5 +1,4 @@
 let input_post_body = document.querySelector('input[name="post_body"]');
-let btn_post_submit = document.querySelector('button[name="post_submit"]');
 let form = document.getElementById('form_post');
 let editor_config = {
     holder: 'post_body',
@@ -33,6 +32,7 @@ let editor_config = {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    //Si edit
     if (input_post_body.value) {
         editor_config['data'] = {
             time: 10000,
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editor.save().then((outputData) => {
             input_post_body.value = JSON.stringify(outputData.blocks);
 
-            let formData = new FormData(document.getElementById('form_post'));
+            let formData = new FormData(form);
 
             let url = form.dataset.action === 'new' ? '/admin/ajax/posts/new' : '/admin/ajax/posts/edit/'+form.dataset.id;
 

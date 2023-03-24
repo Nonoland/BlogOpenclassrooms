@@ -19,6 +19,15 @@ class IndexController extends FrontController
         ]);
     }
 
+    #[Route('GET', '/contact')]
+    public function contact(): void
+    {
+        $posts = Post::getAllPosts();
+
+        $templates = $this->getTwig()->load('front/user/contact.twig');
+        echo $templates->render([]);
+    }
+
     #[Route('GET', '/404')]
     public function page404(): void
     {

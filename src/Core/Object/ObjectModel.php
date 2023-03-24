@@ -72,7 +72,11 @@ abstract class ObjectModel
             }
         }
 
-        return $dbInstance->insert(static::$definitions['table'], $data);
+        $insertResult = $dbInstance->insert(static::$definitions['table'], $data);
+
+        $this->id = (int)$dbInstance->getPDO()->lastInsertId();
+
+        return $insertResult;
     }
 
     public function update(): bool

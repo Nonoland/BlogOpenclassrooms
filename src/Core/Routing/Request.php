@@ -2,15 +2,34 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 
+use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
+use Nolandartois\BlogOpenclassrooms\Core\Auth\Cookie;
+use Nolandartois\BlogOpenclassrooms\Core\Object\User;
+
 class Request
 {
     private string $currentRoute;
     private string $methodHttp;
+    private Cookie $cookie;
+    private User $user;
 
     public function __construct()
     {
         $this->currentRoute = $_GET['path'];
         $this->methodHttp = ucwords($_SERVER['REQUEST_METHOD']);
+        $this->cookie = Cookie::getInstance();
+        $this->user = new User();
+
+        $this->loadUser();
+    }
+
+    protected function loadUser()
+    {
+        try {
+            $this->user = Authentification::getAuthentificateUser($this->cookie->getAuthentificationCookieKey());
+        } catch (\Exception $e) {
+            $this->cookie->clearCookie();
+        }
     }
 
     public function getCurrentRoute(): string
@@ -48,5 +67,15 @@ class Request
     public function getValueGet(string $name): string
     {
         return $this->sanitizeData($_GET[$name]);
+    }
+
+    public function getCookie(): Cookie
+    {
+        return $this->cookie;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 }
