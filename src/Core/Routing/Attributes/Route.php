@@ -120,6 +120,11 @@ class Route
         return $this->methodName;
     }
 
+    public function setMethodName(string $methodName): void
+    {
+        $this->methodName = $methodName;
+    }
+
     public function getMethodsHttp(): array
     {
         return $this->methodsHttp;
