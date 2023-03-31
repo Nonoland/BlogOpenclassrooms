@@ -4,7 +4,7 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Front;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
 use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 
 class PostController extends FrontController
 {
@@ -14,7 +14,7 @@ class PostController extends FrontController
         $post = Post::getPostBySlug($params['slug']);
 
         if (!$post) {
-            $this->redirect('/');
+            self::redirect('/');
         }
 
         $templates = $this->getTwig()->load('front/post/post.twig');
@@ -29,7 +29,7 @@ class PostController extends FrontController
         $post = Post::getPostById($params['id_post']);
 
         if (!$post) {
-            $this->redirect('/');
+            self::redirect('/');
         }
 
         $templates = $this->getTwig()->load('front/post/post.twig');

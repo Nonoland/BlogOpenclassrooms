@@ -2,8 +2,8 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Twig;
 
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

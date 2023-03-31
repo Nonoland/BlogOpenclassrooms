@@ -5,7 +5,7 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Front;
 use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
 use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
 use Nolandartois\BlogOpenclassrooms\Core\Object\User;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 
 class AuthController extends FrontController
 {
@@ -18,7 +18,7 @@ class AuthController extends FrontController
         $messages = [];
 
         if (!$request->getUser()->isGuest()) {
-            $this->redirect('/my_account');
+            self::redirect('/my_account');
         }
 
         if ($request->getIsset('action') && $request->getValuePost('action') == 'register') {
@@ -47,7 +47,7 @@ class AuthController extends FrontController
                 if ($cookieKey) {
                     $request->getCookie()->setAuthentificationCookieKey($cookieKey);
                     $request->getCookie()->writeCookie();
-                    $this->redirect('my_account');
+                    self::redirect('my_account');
                 } else {
                     $messages[] = "Authentification échouée, email et/ou mot de passe incorrect.";
                 }

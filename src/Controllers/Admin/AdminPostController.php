@@ -4,13 +4,14 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Admin;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
 use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
 
 class AdminPostController extends AdminController
 {
 
 
-    #[Route('GET', '/admin/posts')]
+    #[Route('GET', '/admin/posts'), RouteAccess('admin')]
     public function indexPosts(): void
     {
         $posts = Post::getAllPosts();
@@ -21,14 +22,14 @@ class AdminPostController extends AdminController
         ]);
     }
 
-    #[Route(['GET'], '/admin/posts/new')]
+    #[Route(['GET'], '/admin/posts/new'), RouteAccess('admin')]
     public function postNew(): void
     {
         $template = $this->getTwig()->load('admin/posts/new.twig');
         echo $template->render();
     }
 
-    #[Route(['POST'], '/admin/ajax/posts/new')]
+    #[Route(['POST'], '/admin/ajax/posts/new'), RouteAccess('admin')]
     public function postNewAjax(): void
     {
         $request = $this->getRequest();
@@ -48,7 +49,7 @@ class AdminPostController extends AdminController
         $this->displayAjax(true);
     }
 
-    #[Route(['POST'], '/admin/ajax/posts/edit/{id_post:int}')]
+    #[Route(['POST'], '/admin/ajax/posts/edit/{id_post:int}'), RouteAccess('admin')]
     public function postEditAjax(array $params): void
     {
         if (!$post = new Post($params['id_post'])) {
@@ -77,11 +78,11 @@ class AdminPostController extends AdminController
         $this->displayAjax(false);
     }
 
-    #[Route(['GET', 'POST'], '/admin/posts/edit/{id_post:int}')]
+    #[Route(['GET', 'POST'], '/admin/posts/edit/{id_post:int}'), RouteAccess('admin')]
     public function postEdit(array $params): void
     {
         if (!$post = new Post($params['id_post'])) {
-            $this->redirect('/admin/posts');
+            self::redirect('/admin/posts');
         }
 
         $request = $this->getRequest();
@@ -96,7 +97,7 @@ class AdminPostController extends AdminController
             $post->setBody($request->getValuePost('post_body'));
             $post->update();
 
-            $this->redirect('/admin/posts');
+            self::redirect('/admin/posts');
         }
 
         $template = $this->getTwig()->load('admin/posts/edit.twig');
@@ -105,12 +106,12 @@ class AdminPostController extends AdminController
         ]);
     }
 
-    #[Route(['GET'], '/admin/posts/delete/{id_post:int}')]
+    #[Route(['GET'], '/admin/posts/delete/{id_post:int}'), RouteAccess('admin')]
     public function postDelete(array $params): void
     {
         $post = new Post((int)$params['id_post']);
         $post->delete();
 
-        $this->redirect('/admin/posts');
+        self::redirect('/admin/posts');
     }
 }
