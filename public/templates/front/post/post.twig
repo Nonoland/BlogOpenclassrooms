@@ -10,7 +10,7 @@
                         <h2 class="subheading">{{ post.description }}</h2>
                         <span class="meta">
                                 Ecrit par
-                                <a href="#!">{{ post.idUser }}</a>
+                                <span>{{ getPostAuthorById(post.idUser) }}</span>
                                 le {{ post.dateAdd|date('d/m/Y') }}
                             </span>
                     </div>

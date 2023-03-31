@@ -4,11 +4,13 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
 use JetBrains\PhpStorm\NoReturn;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Configuration;
+use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\RouteExtension;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
 abstract class Controller
 {
@@ -46,6 +48,10 @@ abstract class Controller
         $this->twig->addGlobal('copyright', Configuration::getConfiguration('copyright'));
 
         $this->twig->addExtension(new RouteExtension($this->dispatcher));
+
+        $this->twig->addFunction(new TwigFunction('getPostAuthorById', function(int $idUser) {
+            return Post::getAuthorById($idUser);
+        }));
     }
 
     protected function getRequest(): Request
