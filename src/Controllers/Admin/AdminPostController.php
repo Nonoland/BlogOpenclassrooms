@@ -3,7 +3,7 @@
 namespace Nolandartois\BlogOpenclassrooms\Controllers\Admin;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
-use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
 

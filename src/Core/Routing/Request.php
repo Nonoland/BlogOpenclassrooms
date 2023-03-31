@@ -4,7 +4,7 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 
 use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
 use Nolandartois\BlogOpenclassrooms\Core\Auth\Cookie;
-use Nolandartois\BlogOpenclassrooms\Core\Object\User;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 
 class Request
 {

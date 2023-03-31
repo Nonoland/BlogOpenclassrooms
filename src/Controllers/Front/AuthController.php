@@ -4,7 +4,7 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Front;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
 use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
-use Nolandartois\BlogOpenclassrooms\Core\Object\User;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 
 class AuthController extends FrontController

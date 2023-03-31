@@ -3,7 +3,7 @@
 namespace Nolandartois\BlogOpenclassrooms\Core\Auth;
 
 use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
-use Nolandartois\BlogOpenclassrooms\Core\Object\User;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 
 class Authentification
 {

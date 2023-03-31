@@ -1,6 +1,6 @@
 <?php
 
-namespace Nolandartois\BlogOpenclassrooms\Core\Object;
+namespace Nolandartois\BlogOpenclassrooms\Core\Entity;
 
 use DateTime;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Db;

@@ -4,7 +4,7 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
 use JetBrains\PhpStorm\NoReturn;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Configuration;
-use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\RouteExtension;
