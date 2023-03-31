@@ -7,7 +7,7 @@ use Nolandartois\BlogOpenclassrooms\Core\Object\User;
 
 class Authentification
 {
-    public static function connectUser(string $email, string $password)
+    public static function connectUser(string $email, string $password): false|string
     {
         $dbInstance = Db::getInstance();
 
@@ -55,7 +55,7 @@ class Authentification
         return new User($users[0]['id']);
     }
 
-    public static function generateRandomKey()
+    public static function generateRandomKey(): string
     {
         return bin2hex(random_bytes(16));
     }

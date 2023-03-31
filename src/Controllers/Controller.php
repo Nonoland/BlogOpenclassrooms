@@ -31,14 +31,14 @@ abstract class Controller
         $this->loadTwigVariables();
     }
 
-    public function displayAjax(string $data)
+    public function displayAjax(string $data): void
     {
         header('Content-Type: application/json; charset=utf-8');
         echo $data;
         exit();
     }
 
-    protected function loadTwigVariables()
+    protected function loadTwigVariables(): void
     {
         $this->twig->addGlobal('phpVersion', phpversion());
         $this->twig->addGlobal('blogName', Configuration::getConfiguration('blog_name'));
@@ -74,7 +74,7 @@ abstract class Controller
         return $this->twig;
     }
 
-    public static function redirect($route): void
+    public static function redirect(string $route): void
     {
         header("Location: $route");
         exit();

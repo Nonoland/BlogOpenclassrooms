@@ -23,7 +23,7 @@ class RouteExtension extends AbstractExtension
         ];
     }
 
-    public function getRoute($routeName)
+    public function getRoute(string $routeName): string
     {
         foreach ($this->dispatcher->getRoutes() as $controller) {
             /** @var Route $route */

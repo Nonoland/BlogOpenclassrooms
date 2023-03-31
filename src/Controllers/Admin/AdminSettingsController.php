@@ -11,7 +11,7 @@ class AdminSettingsController extends AdminController
 {
 
     #[Route(['GET', 'POST'], '/admin/settings'), RouteAccess('admin')]
-    public function indexSettings()
+    public function indexSettings(): void
     {
         $request = $this->getRequest();
 

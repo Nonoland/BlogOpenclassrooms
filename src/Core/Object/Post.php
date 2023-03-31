@@ -45,7 +45,7 @@ class Post extends ObjectModel
         return $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
     }
 
-    public static function getPostById(int $idPost)
+    public static function getPostById(int $idPost): false|Post
     {
         $dbInstance = Db::getInstance();
         $result = $dbInstance->select(self::$definitions['table'], "id = $idPost", [], '', 1);
@@ -171,7 +171,7 @@ class Post extends ObjectModel
         $this->idUser = $idUser;
     }
 
-    public static function getAuthorById(int $idUser)
+    public static function getAuthorById(int $idUser): string
     {
         $user = new User($idUser);
         if ($user->isGuest()) {

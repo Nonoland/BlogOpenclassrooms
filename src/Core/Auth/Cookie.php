@@ -4,12 +4,12 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Auth;
 
 class Cookie
 {
-    private $name;
-    private $value;
+    private string $name;
+    private string $value;
 
     const COOKIE_DURATION = 86400;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
         $this->value = [];
@@ -24,7 +24,7 @@ class Cookie
         $this->value[$key] = $value;
     }
 
-    public function getValue($key): string
+    public function getValue(string $key): string
     {
         if (array_key_exists($key, $this->value)) {
             return $this->value[$key];

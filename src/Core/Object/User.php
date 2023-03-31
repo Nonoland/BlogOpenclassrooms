@@ -160,7 +160,7 @@ class User extends ObjectModel
         return !empty($result);
     }
 
-    public static function getAllUsers()
+    public static function getAllUsers(): false|array
     {
         return Db::getInstance()->select(self::$definitions['table']);
     }
