@@ -21,11 +21,11 @@ $dotenv->load();
 /* SCSS */
 if ($_ENV['MODE'] == 'DEV') {
     $compilerSCSS = new Compiler();
-    $resultFront = $compilerSCSS->compileString('@import "'.$_ENV['PATH'].'public/assets/css/front/main.scss";');
-    $resultAdmin = $compilerSCSS->compileString('@import "'.$_ENV['PATH'].'public/assets/css/admin/main.scss";');
+    $resultFront = $compilerSCSS->compileString('@import "'.$_ENV['BLOG_PATH'].'public/assets/css/front/main.scss";');
+    $resultAdmin = $compilerSCSS->compileString('@import "'.$_ENV['BLOG_PATH'].'public/assets/css/admin/main.scss";');
 
-    file_put_contents($_ENV['PATH'].'public/assets/css/front/main.css', $resultFront->getCss());
-    file_put_contents($_ENV['PATH'].'public/assets/css/admin/main.css', $resultAdmin->getCss());
+    file_put_contents($_ENV['BLOG_PATH'].'public/assets/css/front/main.css', $resultFront->getCss());
+    file_put_contents($_ENV['BLOG_PATH'].'public/assets/css/admin/main.css', $resultAdmin->getCss());
 }
 
 /* Index */

@@ -5,7 +5,7 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Auth;
 class Cookie
 {
     private string $name;
-    private string $value;
+    private array $value;
 
     const COOKIE_DURATION = 86400;
 

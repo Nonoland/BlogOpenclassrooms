@@ -114,8 +114,9 @@ class Dispatcher
                 continue;
             }
 
-            $attribute = $attributes[0];
-            $route = new Route($attribute->getArguments()[0], $attribute->getArguments()[1], $method->getName());
+            /** @var Route $route */
+            $route = $attributes[0]->newInstance();
+            $route->setMethodName($method->getName());
 
             $this->routes[$controller][] = $route;
         }
