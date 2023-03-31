@@ -14,15 +14,15 @@ class Authentification
         $users = $dbInstance->select(User::$definitions['table'], "email = \"$email\"");
 
         if (count($users) > 1) {
-            throw new \Exception("Trop d'utilisateur avec le même email !");
+            return false;
         }
 
         if (empty($users)) {
-            throw new \Exception("Pas d'utilisateur trouvé !");
+            return false;
         }
 
         if (!password_verify($password, $users[0]['password'])) {
-            throw new \Exception("Mot de passe incorrect");
+            return false;
         }
 
         $cookieKey = self::generateRandomKey();
@@ -38,18 +38,18 @@ class Authentification
         return $cookieKey;
     }
 
-    public static function getAuthentificateUser(string $cookieKey): User
+    public static function getAuthentificateUser(string $cookieKey): User|false
     {
         $dbInstance = Db::getInstance();
 
         $users = $dbInstance->select(User::$definitions['table'], "cookie_key = \"$cookieKey\"");
 
         if (count($users) > 1) {
-            throw new \Exception("Trop d'utilisateur avec le même cookieKey !");
+            return false;
         }
 
         if (empty($users)) {
-            throw new \Exception("Pas d'utilisateur trouvé");
+            return false;
         }
 
         return new User($users[0]['id']);

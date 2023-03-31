@@ -30,11 +30,11 @@ class User extends ObjectModel
     {
         parent::__construct($id);
 
+        $this->guest = false;
+
         if ($this->id == 0) {
             $this->guest = true;
         }
-
-        $this->guest = false;
     }
 
     public function add(): bool

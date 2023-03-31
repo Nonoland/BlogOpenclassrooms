@@ -43,6 +43,7 @@ class Dispatcher
                 return;
             }
         }
+
         header('HTTP/1.0 404 Not Found');
     }
 

@@ -18,18 +18,19 @@ class Request
         $this->currentRoute = $_GET['path'];
         $this->methodHttp = ucwords($_SERVER['REQUEST_METHOD']);
         $this->cookie = Cookie::getInstance();
-        $this->user = new User();
-
         $this->loadUser();
     }
 
-    protected function loadUser()
+    protected function loadUser(): void
     {
-        try {
-            $this->user = Authentification::getAuthentificateUser($this->cookie->getAuthentificationCookieKey());
-        } catch (\Exception $e) {
+        if (!$userFound = Authentification::getAuthentificateUser($this->cookie->getAuthentificationCookieKey())) {
             $this->cookie->clearCookie();
+            $this->user = new User();
+
+            return;
         }
+
+        $this->user = $userFound;
     }
 
     public function getCurrentRoute(): string

@@ -15,7 +15,7 @@ class AuthController extends FrontController
     public function login(): void
     {
         $request = $this->getRequest();
-        $message = [];
+        $messages = [];
 
         if (!$request->getUser()->isGuest()) {
             $this->redirect('/my_account');
@@ -34,7 +34,7 @@ class AuthController extends FrontController
                 $user->setRoles(['user']);
                 $user->add();
 
-                $message[] = 'Inscription réussie !';
+                $messages[] = 'Inscription réussie !';
             }
         } elseif ($request->getIsset('action') && $request->getValuePost('action') == 'login') {
             if ($request->getIsset('email') && $request->getIsset('password')) {
@@ -47,16 +47,16 @@ class AuthController extends FrontController
                 if ($cookieKey) {
                     $request->getCookie()->setAuthentificationCookieKey($cookieKey);
                     $request->getCookie()->writeCookie();
-                    $message[] = "Connexion réussie !";
+                    $this->redirect('my_account');
                 } else {
-                    $message[] = "Authentification échouée, email et/ou mot de passe incorrect.";
+                    $messages[] = "Authentification échouée, email et/ou mot de passe incorrect.";
                 }
             }
         }
 
         $templates = $this->getTwig()->load('front/user/login_register.twig');
         echo $templates->render([
-            'message' => $message
+            'messages' => $messages
         ]);
     }
 
