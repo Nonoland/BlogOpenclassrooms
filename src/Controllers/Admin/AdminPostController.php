@@ -39,9 +39,14 @@ class AdminPostController extends AdminController
         }
 
         $post = new Post();
-        $post->setIdUser(1);
+        $post->setIdUser($request->getUser()->getId());
         $post->setDescription($request->getValuePost('post_description'));
-        $post->setBody($request->getValuePost('post_body'));
+        $post->setBody(
+            json_decode(
+                htmlspecialchars_decode($request->getValuePost('post_body')),
+                true
+            )
+        );
         $post->setTitle($request->getValuePost('post_title'));
         $post->add();
 

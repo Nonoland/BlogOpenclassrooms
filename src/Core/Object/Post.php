@@ -32,6 +32,13 @@ class Post extends ObjectModel
         parent::__construct($id);
     }
 
+    public function add(): bool
+    {
+        $this->slug = str_replace(" ", "_", $this->title);
+
+        return parent::add();
+    }
+
     public static function getAllPosts(): array
     {
         $dbInstance = Db::getInstance();
@@ -162,5 +169,15 @@ class Post extends ObjectModel
     public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
+    }
+
+    public static function getAuthorById(int $idUser)
+    {
+        $user = new User($idUser);
+        if ($user->isGuest()) {
+            return "Unknown";
+        }
+
+        return $user->getFirstname().' '.$user->getLastname();
     }
 }

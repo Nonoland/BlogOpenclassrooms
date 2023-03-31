@@ -27,7 +27,7 @@
                     <td style="text-align: center">{{ post.id }}</td>
                     <td>{{ post.title|raw }}</td>
                     <td style="text-align: center"></td>
-                    <td style="text-align: center"></td>
+                    <td style="text-align: center">{{ getPostAuthorById(post.id_user) }}</td>
                     <td style="text-align: center"><a href="/admin/posts/edit/{{ post.id }}">Editer</a><a href="/admin/posts/delete/{{ post.id }}">Supprimer</a></td>
                 </tr>
             {% endfor %}

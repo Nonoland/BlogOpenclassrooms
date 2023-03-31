@@ -14,7 +14,7 @@
                         </a>
                         <p class="post-meta">
                             Ecrit par
-                            <a href="#!">Start Bootstrap</a>
+                            <span style="color: black">{{ getPostAuthorById(post.id_user) }}</span>
                             le {{ post.date_add|date('m/d/Y') }}
                         </p>
                     </div>
