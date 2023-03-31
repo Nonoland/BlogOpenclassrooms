@@ -10,7 +10,6 @@ use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
 class AdminPostController extends AdminController
 {
 
-
     #[Route('GET', '/admin/posts'), RouteAccess('admin')]
     public function indexPosts(): void
     {
