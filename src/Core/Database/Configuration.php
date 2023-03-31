@@ -24,6 +24,6 @@ class Configuration
     public static function updateConfiguration(string $name, mixed $value): bool
     {
         $dbInstance = Db::getInstance();
-        return $dbInstance->update('configuration', ['value' => $value], "name = $name");
+        return $dbInstance->update('configuration', ['value' => $value], "name = \"$name\"");
     }
 }

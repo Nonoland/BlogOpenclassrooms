@@ -43,10 +43,18 @@ class Dispatcher
                 try {
                     $this->executeRoute($controller, $route, $matches);
                 } catch (Exception $e) {
+
+                    if ($_ENV['MODE'] == 'DEV') {
+                        echo $e->getMessage();
+                        echo $e->getTraceAsString();
+
+                        return;
+                    }
+
                     switch($e->getCode()) {
                         case 401: Controller::redirect("/"); break;
-                        case 500: Controller::redirect("/500"); break;
-                        default: Controller::redirect("/404"); break;
+                        case 404: Controller::redirect("/404"); break;
+                        default: Controller::redirect("/500"); break;
                     }
                 }
 

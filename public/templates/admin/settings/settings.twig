@@ -1,0 +1,35 @@
+{% extends '/admin/page.twig' %}
+
+{% block page_title %}
+    Paramètres
+{% endblock %}
+
+{% block page_content %}
+    <form action="" method="post" class="form">
+        <div class="form_group">
+            <label for="blog_name">Nom du blog</label>
+            <input type="text" name="blog_name" id="blog_name" value="{{ blog_name }}" required />
+        </div>
+        <div class="form_group">
+            <label for="blog_domain">Nom de domaine</label>
+            <input type="text" name="blog_domain" id="blog_domain" value="{{ blog_domain }}" required />
+        </div>
+        <div class="form_group">
+            <label for="copyright">Copyright</label>
+            <input type="text" name="copyright" id="copyright" value="{{ copyright }}" />
+        </div>
+        <div class="form_group">
+            <label for="twitter_url">Url vers compte Twitter</label>
+            <input type="text" name="twitter_url" id="twitter_url" value="{{ twitter_url }}" />
+        </div>
+        <div class="form_group">
+            <label for="facebook_url">Url vers Facebook</label>
+            <input type="text" name="facebook_url" id="facebook_url" value="{{ facebook_url }}" />
+        </div>
+        <div class="form_group">
+            <label for="github_url">Url vers Github</label>
+            <input type="text" name="github_url" id="github_url" value="{{ github_url }}" />
+        </div>
+        <button type="submit" name="user_submit">Enregistrer</button>
+    </form>
+{% endblock %}

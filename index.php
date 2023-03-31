@@ -1,6 +1,7 @@
 <?php
 
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminPostController;
+use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminSettingsController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminUserController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\DashboardController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\DevelopmentController;
@@ -39,5 +40,6 @@ $dispatcher->registerController(DashboardController::class);
 $dispatcher->registerController(AdminPostController::class);
 $dispatcher->registerController(AdminUserController::class);
 $dispatcher->registerController(DevelopmentController::class);
+$dispatcher->registerController(AdminSettingsController::class);
 
 $dispatcher->dispatch($request);

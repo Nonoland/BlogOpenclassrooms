@@ -40,6 +40,10 @@ abstract class Controller
     {
         $this->twig->addGlobal('phpVersion', phpversion());
         $this->twig->addGlobal('blogName', Configuration::getConfiguration('blog_name'));
+        $this->twig->addGlobal('twitterUrl', Configuration::getConfiguration('twitter_url'));
+        $this->twig->addGlobal('githubUrl', Configuration::getConfiguration('github_url'));
+        $this->twig->addGlobal('facebookUrl', Configuration::getConfiguration('facebook_url'));
+        $this->twig->addGlobal('copyright', Configuration::getConfiguration('copyright'));
 
         $this->twig->addExtension(new RouteExtension($this->dispatcher));
     }
