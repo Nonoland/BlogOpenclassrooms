@@ -1,9 +1,8 @@
 <?php
 
-namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
+namespace Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes;
 
 use Attribute;
-use InvalidArgumentException;
 
 #[Attribute]
 class Route
@@ -91,7 +90,7 @@ class Route
                     );
                     break;
                 default:
-                    throw new InvalidArgumentException("Type $tmp[1] not exist for route regex");
+                    throw new \InvalidArgumentException("Type $tmp[1] not exist for route regex");
             }
         }
     }

@@ -4,9 +4,10 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 
 use Exception;
 use InvalidArgumentException;
-use JetBrains\PhpStorm\NoReturn;
 use Nolandartois\BlogOpenclassrooms\Controllers\Controller;
 use Nolandartois\BlogOpenclassrooms\Core\Config\Config;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -39,7 +40,16 @@ class Dispatcher
 
                 $matches = array_filter($matches, "is_string", ARRAY_FILTER_USE_KEY);
 
-                $this->executeRoute($controller, $route, $matches);
+                try {
+                    $this->executeRoute($controller, $route, $matches);
+                } catch (Exception $e) {
+                    switch($e->getCode()) {
+                        case 401: Controller::redirect("/"); break;
+                        case 500: Controller::redirect("/500"); break;
+                        default: Controller::redirect("/404"); break;
+                    }
+                }
+
                 return;
             }
         }
@@ -47,10 +57,28 @@ class Dispatcher
         header('HTTP/1.0 404 Not Found');
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function executeRoute(string $controller, Route $route, array $params = []): void
     {
         $controller = new $controller($this->request, $this);
         $methodName = $route->getMethodName();
+
+        $reflector = new ReflectionClass($controller);
+        $methodData = $reflector->getMethod($methodName);
+
+        if (!empty($routeAccess = $methodData->getAttributes(RouteAccess::class))) {
+            if (count($routeAccess) > 1) {
+                throw new Exception("Too many RouteAccess attributes", 500);
+            }
+
+            /** @var RouteAccess $routeAccess */
+            $routeAccess = $routeAccess[0]->newInstance();
+            if (!array_intersect($routeAccess->getRoles(), $this->request->getUser()->getRoles())) {
+                throw new Exception("You are not authorised to access this page!", 401);
+            }
+        }
 
         if ($route->isMutable()) {
             $controller->$methodName($params);

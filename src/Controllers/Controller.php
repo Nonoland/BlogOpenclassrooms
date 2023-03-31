@@ -2,6 +2,7 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
+use JetBrains\PhpStorm\NoReturn;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Configuration;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
@@ -63,7 +64,7 @@ abstract class Controller
         return $this->twig;
     }
 
-    protected function redirect($route)
+    public static function redirect($route): void
     {
         header("Location: $route");
         exit();

@@ -4,7 +4,7 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Front;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
 use Nolandartois\BlogOpenclassrooms\Core\Object\Post;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 
 class IndexController extends FrontController
 {

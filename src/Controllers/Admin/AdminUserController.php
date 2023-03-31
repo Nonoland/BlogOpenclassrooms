@@ -4,13 +4,14 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Admin;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
 use Nolandartois\BlogOpenclassrooms\Core\Object\User;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
+use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
 
 class AdminUserController extends AdminController
 {
 
 
-    #[Route(['GET'], '/admin/users')]
+    #[Route(['GET'], '/admin/users'), RouteAccess('admin')]
     public function indexUsers(): void
     {
         $users = User::getAllUsers();
@@ -26,7 +27,7 @@ class AdminUserController extends AdminController
         ]);
     }
 
-    #[Route(['GET', 'POST'], '/admin/users/new')]
+    #[Route(['GET', 'POST'], '/admin/users/new'), RouteAccess('admin')]
     public function newUser(): void
     {
         $request = $this->getRequest();
@@ -44,18 +45,18 @@ class AdminUserController extends AdminController
             $user->setPassword($request->getValuePost('user_password'));
             $user->add();
 
-            $this->redirect('/admin/users');
+            self::redirect('/admin/users');
         }
 
         $template = $this->getTwig()->load('admin/users/new.twig');
         echo $template->render();
     }
 
-    #[Route(['GET', 'POST'], '/admin/users/edit/{id_user:int}')]
+    #[Route(['GET', 'POST'], '/admin/users/edit/{id_user:int}'), RouteAccess('admin')]
     public function editUser(array $params): void
     {
         if (!$user = new User($params['id_user'])) {
-            $this->redirect('/admin/users');
+            self::redirect('/admin/users');
         }
 
         $request = $this->getRequest();
@@ -75,7 +76,7 @@ class AdminUserController extends AdminController
 
             $user->update();
 
-            $this->redirect('/admin/users');
+            self::redirect('/admin/users');
         }
 
         $template = $this->getTwig()->load('admin/users/edit.twig');
@@ -84,13 +85,13 @@ class AdminUserController extends AdminController
         ]);
     }
 
-    #[Route(['GET'], '/admin/users/delete/{id_user:int}')]
+    #[Route(['GET'], '/admin/users/delete/{id_user:int}'), RouteAccess('admin')]
     public function deleteUser(array $params): void
     {
         $user = new User($params['id_user']);
         $user->delete();
 
-        $this->redirect('/admin/users');
+        self::redirect('/admin/users');
     }
 
 }
