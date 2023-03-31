@@ -39,7 +39,6 @@ $dispatcher->registerController(PostController::class);
 $dispatcher->registerController(DashboardController::class);
 $dispatcher->registerController(AdminPostController::class);
 $dispatcher->registerController(AdminUserController::class);
-$dispatcher->registerController(DevelopmentController::class);
 $dispatcher->registerController(AdminSettingsController::class);
 
 $dispatcher->dispatch($request);
