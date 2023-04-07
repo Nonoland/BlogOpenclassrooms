@@ -59,8 +59,7 @@ class Request
             return $value;
         }
 
-        $value = trim($value);
-        $value = htmlspecialchars($value);
+        $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 
         return $value;
     }

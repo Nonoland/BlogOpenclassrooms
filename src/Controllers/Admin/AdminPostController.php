@@ -43,7 +43,7 @@ class AdminPostController extends AdminController
         $post->setDescription($request->getValuePost('post_description'));
         $post->setBody(
             json_decode(
-                htmlspecialchars_decode($request->getValuePost('post_body')),
+                htmlspecialchars_decode($request->getValuePost('post_body'), ENT_QUOTES),
                 true
             )
         );
@@ -70,7 +70,7 @@ class AdminPostController extends AdminController
             $post->setDescription($request->getValuePost('post_description'));
             $post->setBody(
                 json_decode(
-                    htmlspecialchars_decode($request->getValuePost('post_body')),
+                    htmlspecialchars_decode($request->getValuePost('post_body'), ENT_QUOTES),
                     true
                 )
             );
