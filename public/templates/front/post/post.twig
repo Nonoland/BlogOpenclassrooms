@@ -12,7 +12,11 @@
                                 Ecrit par
                                 <span>{{ getPostAuthorById(post.idUser) }}</span>
                                 le {{ post.dateAdd|date('d/m/Y') }}
-                            </span>
+                        </span>
+                        <span class="meta" style="margin-top: 10px">
+                            {% set readingTime = getReadingTime(post.body) %}
+                            Temps de lecture : {% if readingTime == 0 %}quelque secondes{% else %}{{ readingTime }} minutes{% endif %}
+                        </span>
                     </div>
                 </div>
             </div>

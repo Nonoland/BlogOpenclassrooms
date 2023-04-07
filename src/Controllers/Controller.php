@@ -8,6 +8,7 @@ use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\RouteExtension;
+use Nolandartois\BlogOpenclassrooms\Core\Twig\WPMExtension;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
@@ -48,6 +49,7 @@ abstract class Controller
         $this->twig->addGlobal('copyright', Configuration::getConfiguration('copyright'));
 
         $this->twig->addExtension(new RouteExtension($this->dispatcher));
+        $this->twig->addExtension(new WPMExtension());
 
         $this->twig->addFunction(new TwigFunction('getPostAuthorById', function(int $idUser) {
             return Post::getAuthorById($idUser);
