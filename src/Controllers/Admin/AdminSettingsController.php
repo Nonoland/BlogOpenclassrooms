@@ -17,6 +17,7 @@ class AdminSettingsController extends AdminController
 
         if ($request->getIsset('blog_name')
             && $request->getIsset('blog_domain')
+            && $request->getIsset('words_per_minutes')
             && $request->getIsset('copyright')
             && $request->getIsset('twitter_url')
             && $request->getIsset('facebook_url')
@@ -28,6 +29,7 @@ class AdminSettingsController extends AdminController
             Configuration::updateConfiguration('twitter_url', $request->getValuePost('twitter_url'));
             Configuration::updateConfiguration('facebook_url', $request->getValuePost('facebook_url'));
             Configuration::updateConfiguration('github_url', $request->getValuePost('github_url'));
+            Configuration::updateConfiguration('words_per_minutes', $request->getValuePost('words_per_minutes'));
         }
 
         $template = $this->getTwig()->load('admin/settings/settings.twig');
@@ -38,6 +40,7 @@ class AdminSettingsController extends AdminController
             'twitter_url' => Configuration::getConfiguration('twitter_url'),
             'facebook_url' => Configuration::getConfiguration('facebook_url'),
             'github_url' => Configuration::getConfiguration('github_url'),
+            'words_per_minutes' => Configuration::getConfiguration('words_per_minutes'),
         ]);
     }
 
