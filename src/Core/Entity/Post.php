@@ -59,7 +59,7 @@ class Post extends ObjectModel
         $post->slug = $result[0]['slug'];
         $post->title = $result[0]['title'];
         $post->description = $result[0]['description'];
-        $post->body = json_decode(htmlspecialchars_decode($result[0]['body']), true);
+        $post->body = json_decode(htmlspecialchars_decode($result[0]['body'], ENT_QUOTES), true);
         $post->dateAdd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_add']);
         $post->dateUpd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_upd']);
         $post->views = (int)$result[0]['views'];
@@ -82,7 +82,7 @@ class Post extends ObjectModel
         $post->slug = $result[0]['slug'];
         $post->title = $result[0]['title'];
         $post->description = $result[0]['description'];
-        $post->body = json_decode(htmlspecialchars_decode($result[0]['body']), true);
+        $post->body = json_decode(htmlspecialchars_decode($result[0]['body'], ENT_QUOTES), true);
         $post->dateAdd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_add']);
         $post->dateUpd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_upd']);
         $post->views = (int)$result[0]['views'];
