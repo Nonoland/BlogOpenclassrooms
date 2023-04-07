@@ -31,6 +31,6 @@ class WPMExtension extends AbstractExtension
 
         $minutes = ($nbWords / (int)Configuration::getConfiguration('words_per_minutes'));
 
-        return round($minutes);
+        return (int)round($minutes);
     }
 }
