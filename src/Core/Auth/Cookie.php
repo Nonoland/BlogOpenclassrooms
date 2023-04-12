@@ -45,7 +45,14 @@ class Cookie
 
     public function writeCookie(): bool
     {
-        return setcookie($this->name, json_encode($this->value), time() + self::COOKIE_DURATION, '/', $_ENV['DOMAIN'], true, false);
+        return setcookie(
+            $this->name,
+            json_encode($this->value),
+            time() + self::COOKIE_DURATION,
+            '/', $_ENV['DOMAIN'],
+            true,
+            false
+        );
     }
 
     public function clearCookie(): void

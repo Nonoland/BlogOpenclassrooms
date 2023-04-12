@@ -23,7 +23,9 @@ class Request
 
     protected function loadUser(): void
     {
-        if (!$userFound = Authentification::getAuthentificateUser($this->cookie->getAuthentificationCookieKey())) {
+        $userFound = Authentification::getAuthentificateUser($this->cookie->getAuthentificationCookieKey());
+
+        if (!$userFound) {
             $this->cookie->clearCookie();
             $this->user = new User();
 
