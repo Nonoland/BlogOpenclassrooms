@@ -4,44 +4,41 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Admin;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Configuration;
+use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminSettingsController extends AdminController
 {
 
     #[Route(['GET', 'POST'], '/admin/settings'), RouteAccess('admin')]
-    public function indexSettings(): void
+    public function indexSettings(): Response
     {
         $request = $this->getRequest();
+        $dbInstance = Db::getInstance();
 
-        if ($request->getIsset('blog_name')
-            && $request->getIsset('blog_domain')
-            && $request->getIsset('words_per_minutes')
-            && $request->getIsset('copyright')
-            && $request->getIsset('twitter_url')
-            && $request->getIsset('facebook_url')
-            && $request->getIsset('github_url')) {
+        $configurations = $dbInstance->select('configuration');
 
-            Configuration::updateConfiguration('blog_name', $request->getValuePost('blog_name'));
-            Configuration::updateConfiguration('blog_domain', $request->getValuePost('blog_domain'));
-            Configuration::updateConfiguration('copyright', $request->getValuePost('copyright'));
-            Configuration::updateConfiguration('twitter_url', $request->getValuePost('twitter_url'));
-            Configuration::updateConfiguration('facebook_url', $request->getValuePost('facebook_url'));
-            Configuration::updateConfiguration('github_url', $request->getValuePost('github_url'));
-            Configuration::updateConfiguration('words_per_minutes', $request->getValuePost('words_per_minutes'));
+        $userSubmit = $request->request->has('user_submit');
+        if ($userSubmit) {
+            foreach ($configurations as &$configuration) {
+                if ($request->request->has($configuration['name'])) {
+                    $configuration['value'] = $request->request->get($configuration['name'], "");
+                    Configuration::updateConfiguration($configuration['name'], $configuration['value']);
+                }
+            }
+        }
+
+        $values = [];
+        foreach ($configurations as &$configuration) {
+            $values[$configuration['name']] = $configuration['value'];
         }
 
         $template = $this->getTwig()->load('admin/settings/settings.twig');
-        echo $template->render([
-            'blog_name' => Configuration::getConfiguration('blog_name'),
-            'blog_domain' => Configuration::getConfiguration('blog_domain'),
-            'copyright' => Configuration::getConfiguration('copyright'),
-            'twitter_url' => Configuration::getConfiguration('twitter_url'),
-            'facebook_url' => Configuration::getConfiguration('facebook_url'),
-            'github_url' => Configuration::getConfiguration('github_url'),
-            'words_per_minutes' => Configuration::getConfiguration('words_per_minutes'),
-        ]);
+        $content = $template->render($values);
+
+        return new Response($content);
     }
 
 }
