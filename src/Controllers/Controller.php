@@ -7,7 +7,9 @@ use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\RouteExtension;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\WPMExtension;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
@@ -31,11 +33,13 @@ abstract class Controller
         $this->loadTwigVariables();
     }
 
-    public function displayAjax(string $data): void
+    public function displayAjax(string $data): Response
     {
-        header('Content-Type: application/json; charset=utf-8');
-        echo $data;
-        exit();
+        return new Response(
+            $data,
+            200,
+            ['Content-Type: application/json; charset=utf-8']
+        );
     }
 
     protected function loadTwigVariables(): void
@@ -75,9 +79,8 @@ abstract class Controller
         return $this->twig;
     }
 
-    public static function redirect(string $route): void
+    public static function redirect(string $route): Response
     {
-        header("Location: $route");
-        exit();
+        return new RedirectResponse($route);
     }
 }
