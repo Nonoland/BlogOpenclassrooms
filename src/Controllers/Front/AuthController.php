@@ -39,10 +39,10 @@ class AuthController extends FrontController
             $password = $request->request->get('password', false);
 
             if ($email && $password) {
-                $cookieKey = Authentification::connectUser($email, $password);
+                $connectUser = Authentification::connectUser($email, $password);
 
-                if ($cookieKey) {
-                    $request->getSession()->set('user', $cookieKey);
+                if ($connectUser) {
+                    $request->getSession()->set('user', $connectUser);
                     self::redirect('/my_account');
                 } else {
                     $messages[] = 'Erreur lors de la connexion !';
