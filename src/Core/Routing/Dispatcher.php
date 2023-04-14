@@ -5,32 +5,38 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 use Exception;
 use InvalidArgumentException;
 use Nolandartois\BlogOpenclassrooms\Controllers\Controller;
-use Nolandartois\BlogOpenclassrooms\Core\Config\Config;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Dispatcher
 {
     private array $routes = [];
-    private Request $request;
 
-    public function dispatch(Request $request): void
+    private Request $request;
+    private Response $response;
+
+    public function __construct(Request $request)
     {
         $this->request = $request;
+    }
 
+    public function dispatch(): void
+    {
         foreach ($this->routes as $controller => $routes) {
             /** @var Route $route */
             foreach ($routes as $route) {
-                if (!in_array($request->getMethodHttp(), $route->getMethodsHttp())) {
+                if (!in_array($this->request->getMethod(), $route->getMethodsHttp())) {
                     continue;
                 }
 
                 $result = preg_match(
                     $route->getRouteRegex(),
-                    $request->getCurrentRoute(),
+                    $this->request->query->get('path'),
                     $matches
                 );
 
@@ -41,7 +47,7 @@ class Dispatcher
                 $matches = array_filter($matches, "is_string", ARRAY_FILTER_USE_KEY);
 
                 try {
-                    $this->executeRoute($controller, $route, $matches);
+                    $this->response = $this->executeRoute($controller, $route, $matches);
                 } catch (Exception $e) {
 
                     if ($_ENV['MODE'] == 'DEV') {
@@ -58,6 +64,8 @@ class Dispatcher
                     }
                 }
 
+                $this->response->prepare($this->request)->send();
+
                 return;
             }
         }
@@ -68,7 +76,7 @@ class Dispatcher
     /**
      * @throws ReflectionException
      */
-    private function executeRoute(string $controller, Route $route, array $params = []): void
+    private function executeRoute(string $controller, Route $route, array $params = []): Response
     {
         $controller = new $controller($this->request, $this);
         $methodName = $route->getMethodName();
@@ -83,16 +91,16 @@ class Dispatcher
 
             /** @var RouteAccess $routeAccess */
             $routeAccess = $routeAccess[0]->newInstance();
-            if (!array_intersect($routeAccess->getRoles(), $this->request->getUser()->getRoles())) {
+            /*if (!array_intersect($routeAccess->getRoles(), $this->request->getUser()->getRoles())) {
                 throw new Exception("You are not authorised to access this page!", 401);
-            }
+            }*/
         }
 
         if ($route->isMutable()) {
-            $controller->$methodName($params);
-        } else {
-            $controller->$methodName();
+            return $controller->$methodName($params);
         }
+
+        return $controller->$methodName();
     }
 
     /**

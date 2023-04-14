@@ -2,13 +2,12 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
-use JetBrains\PhpStorm\NoReturn;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Configuration;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\RouteExtension;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\WPMExtension;
+use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;

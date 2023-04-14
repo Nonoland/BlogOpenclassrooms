@@ -4,14 +4,17 @@ use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminPostController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminSettingsController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminUserController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\DashboardController;
-use Nolandartois\BlogOpenclassrooms\Controllers\Admin\DevelopmentController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Front\AuthController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Front\IndexController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Front\PostController;
+use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
-use Nolandartois\BlogOpenclassrooms\Core\Routing\Request;
-
 use ScssPhp\ScssPhp\Compiler;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -29,16 +32,31 @@ if ($_ENV['MODE'] == 'DEV') {
 }
 
 /* Index */
+$request = Request::createFromGlobals();
 
-$request = new Request();
-$dispatcher = new Dispatcher();
+//Create Session
+if (!$request->hasSession()) {
+    $storage = new NativeSessionStorage([
+        'cookie_secure' => 'auto',
+        'cookie_samesite' => Cookie::SAMESITE_LAX,
+    ]);
+    $session = new Session($storage);
+    $session->start();
+    $request->setSession($session);
+}
 
-$dispatcher->registerController(IndexController::class);
-$dispatcher->registerController(AuthController::class);
-$dispatcher->registerController(PostController::class);
-$dispatcher->registerController(DashboardController::class);
-$dispatcher->registerController(AdminPostController::class);
-$dispatcher->registerController(AdminUserController::class);
-$dispatcher->registerController(AdminSettingsController::class);
+$dispatcher = new Dispatcher($request);
 
-$dispatcher->dispatch($request);
+try {
+    $dispatcher->registerController(IndexController::class);
+    $dispatcher->registerController(AuthController::class);
+    $dispatcher->registerController(PostController::class);
+    $dispatcher->registerController(DashboardController::class);
+    $dispatcher->registerController(AdminPostController::class);
+    $dispatcher->registerController(AdminUserController::class);
+    $dispatcher->registerController(AdminSettingsController::class);
+} catch(Exception $e) {
+    echo $e->getMessage();
+}
+
+$dispatcher->dispatch();

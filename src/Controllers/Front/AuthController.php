@@ -6,82 +6,69 @@ use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
 use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends FrontController
 {
 
-
     #[Route(['GET', 'POST'], '/login')]
-    public function login(): void
+    public function login(): Response
     {
         $request = $this->getRequest();
         $messages = [];
 
-        if (!$request->getUser()->isGuest()) {
-            self::redirect('/my_account');
+        if ($request->hasSession() && $request->getSession()->has('user')) {
+            /** @var User $currentUser */
+            $currentUser = $request->getSession()->get('user');
+            if ($currentUser instanceof User && !$currentUser->isGuest()) {
+                self::redirect('/my_account');
+            }
         }
 
-        if ($request->getIsset('action') && $request->getValuePost('action') == 'register') {
+        if ($request->request->has('action')) {
+            if ($request->request->get('action') == 'register') {
+                $firstname = $request->request->get('firstname', false);
+                $lastname = $request->request->get('lastname', false);
+                $email = $request->request->get('email', false);
+                $password = $request->request->get('password', false);
+                $repeatPassword = $request->request->get('rp_password', false);
 
-            if (!User::userExistByEmail($request->getValuePost('email')) &&
-                ($request->getValuePost('password') == $request->getValuePost('rp_password'))) {
+                if ($password === $repeatPassword && is_string($password)) {
+                    $result = Authentification::registerNewUser($firstname, $lastname, $email, $password);
+                    if ($result) {
+                        $messages[] = "Inscription réussie";
+                    } else {
+                        $messages[] = "Erreur lors de l'inscription !";
+                    }
+                }
+            } elseif ($request->request->get('action') == 'login') {
+                $email = $request->request->get('email', false);
+                $password = $request->request->get('password', false);
 
-                $user = new User();
-                $user->setFirstname($request->getValuePost('firstname'));
-                $user->setLastname($request->getValuePost('lastname'));
-                $user->setEmail($request->getValuePost('email'));
-                $user->setPassword($request->getValuePost('password'));
-                $user->setRoles(['user']);
-                $user->add();
+                if ($email && $password) {
+                    $cookieKey = Authentification::connectUser(
+                        $email,
+                        $password
+                    );
 
-                $messages[] = 'Inscription réussie !';
-            }
-        } elseif ($request->getIsset('action') && $request->getValuePost('action') == 'login') {
-            if ($request->getIsset('email') && $request->getIsset('password')) {
-
-                $cookieKey = Authentification::connectUser(
-                    $request->getValuePost('email'),
-                    $request->getValuePost('password')
-                );
-
-                if ($cookieKey) {
-                    $request->getCookie()->setAuthentificationCookieKey($cookieKey);
-                    $request->getCookie()->writeCookie();
-                    self::redirect('my_account');
+                    if ($cookieKey) {
+                        $request->getSession()->set('user', $cookieKey);
+                        self::redirect('/my_account');
+                    } else {
+                        $messages[] = 'Erreur lors de la connexion !';
+                    }
                 } else {
-                    $messages[] = "Authentification échouée, email et/ou mot de passe incorrect.";
+                    $messages[] = "Erreur lors de la connexion !";
                 }
             }
         }
 
         $templates = $this->getTwig()->load('front/user/login_register.twig');
-        echo $templates->render([
+        $content = $templates->render([
             'messages' => $messages
         ]);
-    }
 
-    #[Route(['GET', 'POST'], '/register')]
-    public function register(): void
-    {
-        $request = $this->getRequest();
-
-        if ($request->getIsset('firstname')
-            && $request->getIsset('lastname')
-            && $request->getIsset('email')
-            && $request->getIsset('password')
-            && $request->getIsset('repeat_password')
-            && ($request->getValuePost('password') == $request->getValuePost('repeat_password'))) {
-
-            $user = new User();
-            $user->setFirstname($request->getValuePost('firstname'));
-            $user->setLastname($request->getValuePost('lastname'));
-            $user->setEmail($request->getValuePost('email'));
-            $user->setPassword($request->getValuePost('password'));
-            $user->setRoles(['user']);
-            $user->add();
-        }
-
-
+        return new Response($content);
     }
 
     #[Route(['GET'], '/logout')]
