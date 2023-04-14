@@ -6,13 +6,14 @@ use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminUserController extends AdminController
 {
 
 
     #[Route(['GET'], '/admin/users'), RouteAccess('admin')]
-    public function indexUsers(): void
+    public function indexUsers(): Response
     {
         $users = User::getAllUsers();
 
@@ -22,76 +23,87 @@ class AdminUserController extends AdminController
         }
 
         $template = $this->getTwig()->load('admin/users/users.twig');
-        echo $template->render([
+        $content = $template->render([
             'users' => $users
         ]);
+
+        return new Response($content);
     }
 
     #[Route(['GET', 'POST'], '/admin/users/new'), RouteAccess('admin')]
-    public function newUser(): void
+    public function newUser(): Response
     {
         $request = $this->getRequest();
 
-        if ($request->getIsset('user_lastname')
-            && $request->getIsset('user_firstname')
-            && $request->getIsset('user_email')
-            && $request->getIsset('user_password')) {
+        $userSubmit = $request->request->has('user_submit');
+        $userLastname = $request->request->get('user_lastname', false);
+        $userFirstname = $request->request->get('user_firstname', false);
+        $userEmail = $request->request->get('user_email', false);
+        $userPassword = $request->request->get('user_password', false);
 
+        if ($userSubmit && $userLastname && $userFirstname && $userEmail && $userPassword) {
             $user = new User();
-            $user->setFirstname($request->getValuePost('user_firstname'));
-            $user->setLastname($request->getValuePost('user_lastname'));
-            $user->setEmail($request->getValuePost('user_email'));
+            $user->setFirstname($userFirstname);
+            $user->setLastname($userLastname);
+            $user->setEmail($userEmail);
             $user->setRoles(['user']);
-            $user->setPassword($request->getValuePost('user_password'));
+            $user->setPassword($userPassword);
             $user->add();
 
-            self::redirect('/admin/users');
+            return self::redirect('/admin/users');
         }
 
         $template = $this->getTwig()->load('admin/users/new.twig');
-        echo $template->render();
+        $content = $template->render();
+
+        return new Response($content);
     }
 
     #[Route(['GET', 'POST'], '/admin/users/edit/{id_user:int}'), RouteAccess('admin')]
-    public function editUser(array $params): void
+    public function editUser(array $params): Response
     {
-        if (!$user = new User($params['id_user'])) {
-            self::redirect('/admin/users');
+        $request = $this->getRequest();
+        $user = new User($params['id_user']);
+
+        if ($user->isGuest()) {
+            return self::redirect('/admin/users');
         }
 
-        $request = $this->getRequest();
+        $userSubmit = $request->request->has('user_submit');
+        $userLastname = $request->request->get('user_lastname', false);
+        $userFirstname = $request->request->get('user_firstname', false);
+        $userEmail = $request->request->get('user_email', false);
+        $userPassword = $request->request->get('user_password', false);
 
-        if ($request->getIsset('user_lastname')
-            && $request->getIsset('user_firstname')
-            && $request->getIsset('user_email')
-            && $request->getIsset('user_password')) {
+        if ($userSubmit && $userLastname && $userFirstname && $userEmail) {
+            $user->setLastname($userLastname);
+            $user->setFirstname($userFirstname);
+            $user->setEmail($userEmail);
 
-            $user->setLastname($request->getValuePost('user_lastname'));
-            $user->setFirstname($request->getValuePost('user_firstname'));
-            $user->setEmail($request->getValuePost('user_email'));
-
-            if (!empty($request->getValuePost('user_password'))) {
-                $user->setPassword($request->getValuePost('user_password'));
+            if (!empty($userPassword)) {
+                $user->setPassword($userPassword);
             }
 
             $user->update();
 
-            self::redirect('/admin/users');
+            return self::redirect('/admin/users');
         }
 
         $template = $this->getTwig()->load('admin/users/edit.twig');
-        echo $template->render([
+        $content = $template->render([
             'user' => $user
         ]);
+
+        return new Response($content);
     }
 
     #[Route(['GET'], '/admin/users/delete/{id_user:int}'), RouteAccess('admin')]
-    public function deleteUser(array $params): void
+    public function deleteUser(array $params): Response
     {
         $user = new User($params['id_user']);
         $user->delete();
 
-        self::redirect('/admin/users');
+        return self::redirect('/admin/users');
     }
 
 }

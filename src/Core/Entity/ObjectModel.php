@@ -96,7 +96,7 @@ abstract class ObjectModel
             }
 
             if (is_array($this->{$camelName})) {
-                $data[$valueName] = htmlspecialchars(json_encode($this->{$camelName}, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
+                $data[$valueName] = htmlspecialchars(json_encode($this->{$camelName}, JSON_UNESCAPED_UNICODE), ENT_NOQUOTES, 'UTF-8');
             } else {
                 $data[$valueName] = $this->{$camelName};
             }
