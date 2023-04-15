@@ -4,118 +4,118 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers\Admin;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminPostController extends AdminController
 {
 
     #[Route('GET', '/admin/posts'), RouteAccess('admin')]
-    public function indexPosts(): void
+    public function indexPosts(): Response
     {
         $posts = Post::getAllPosts();
 
         $template = $this->getTwig()->load('admin/posts/posts.twig');
-        echo $template->render([
+        $content = $template->render([
             'posts' => $posts
         ]);
+
+        return new Response($content);
     }
 
     #[Route(['GET'], '/admin/posts/new'), RouteAccess('admin')]
-    public function postNew(): void
+    public function postNew(): Response
     {
         $template = $this->getTwig()->load('admin/posts/new.twig');
-        echo $template->render();
+        $content = $template->render();
+
+        return new Response($content);
     }
 
     #[Route(['POST'], '/admin/ajax/posts/new'), RouteAccess('admin')]
-    public function postNewAjax(): void
+    public function postNewAjax(): Response
     {
         $request = $this->getRequest();
-        if (!$request->getIsset('post_title')
-            || !$request->getIsset('post_description')
-            || !$request->getIsset('post_body')) {
-            $this->displayAjax(false);
+
+        /** @var User $user */
+        $user = $request->getSession()->get('user', false);
+        $postTitle = $request->request->get('post_title', false);
+        $postDescription = $request->request->get('post_description', false);
+        $postBody = $request->request->get('post_body', false);
+
+        if (!$postTitle || !$postDescription || !$postBody || !$user) {
+            return $this->displayAjax(false);
         }
 
         $post = new Post();
-        $post->setIdUser($request->getUser()->getId());
-        $post->setDescription($request->getValuePost('post_description'));
+        $post->setIdUser($user->getId());
+        $post->setDescription($postDescription);
         $post->setBody(
             json_decode(
-                htmlspecialchars_decode($request->getValuePost('post_body'), ENT_QUOTES),
+                htmlspecialchars_decode($postBody, ENT_QUOTES),
                 true
             )
         );
-        $post->setTitle($request->getValuePost('post_title'));
+        $post->setTitle($postTitle);
         $post->add();
 
-        $this->displayAjax(true);
+        return $this->displayAjax(true);
     }
 
     #[Route(['POST'], '/admin/ajax/posts/edit/{id_post:int}'), RouteAccess('admin')]
-    public function postEditAjax(array $params): void
+    public function postEditAjax(array $params): Response
     {
-        if (!$post = new Post($params['id_post'])) {
-            $this->displayAjax(false);
-        }
-
         $request = $this->getRequest();
 
-        if ($request->getIsset('post_description') &&
-            $request->getIsset('post_title') &&
-            $request->getIsset('post_body')) {
+        /** @var User $user */
+        $user = $request->getSession()->get('user', false);
+        $postTitle = $request->request->get('post_title', false);
+        $postDescription = $request->request->get('post_description', false);
+        $postBody = $request->request->get('post_body', false);
 
-            $post->setTitle($request->getValuePost('post_title'));
-            $post->setDescription($request->getValuePost('post_description'));
-            $post->setBody(
-                json_decode(
-                    htmlspecialchars_decode($request->getValuePost('post_body'), ENT_QUOTES),
-                    true
-                )
-            );
-            $post->update();
-
-            $this->displayAjax(true);
+        if (!($post = new Post($params['id_post'])) && (!$postTitle || !$postDescription || $postBody || !$user)) {
+            return $this->displayAjax(false);
         }
 
-        $this->displayAjax(false);
+        $post->setTitle($postTitle);
+        $post->setDescription($postDescription);
+        $post->setBody(
+            json_decode(
+                htmlspecialchars_decode($postBody, ENT_QUOTES),
+                true
+            )
+        );
+        $post->update();
+
+
+        return $this->displayAjax(true);
     }
 
     #[Route(['GET', 'POST'], '/admin/posts/edit/{id_post:int}'), RouteAccess('admin')]
-    public function postEdit(array $params): void
+    public function postEdit(array $params): Response
     {
-        if (!$post = new Post($params['id_post'])) {
-            self::redirect('/admin/posts');
-        }
+        $post = new Post($params['id_post']);
 
-        $request = $this->getRequest();
-
-        if ($request->getIsset('post_submit') &&
-            $request->getIsset('post_description') &&
-            $request->getIsset('post_title') &&
-            $request->getIsset('post_body')) {
-
-            $post->setTitle($request->getValuePost('post_title'));
-            $post->setDescription($request->getValuePost('post_description'));
-            $post->setBody($request->getValuePost('post_body'));
-            $post->update();
-
-            self::redirect('/admin/posts');
+        if ($post->getId() == 0) {
+            return self::redirect('/admin/posts');
         }
 
         $template = $this->getTwig()->load('admin/posts/edit.twig');
-        echo $template->render([
+        $content = $template->render([
             'post' => $post
         ]);
+
+        return new Response($content);
     }
 
     #[Route(['GET'], '/admin/posts/delete/{id_post:int}'), RouteAccess('admin')]
-    public function postDelete(array $params): void
+    public function postDelete(array $params): Response
     {
         $post = new Post((int)$params['id_post']);
         $post->delete();
 
-        self::redirect('/admin/posts');
+        return self::redirect('/admin/posts');
     }
 }

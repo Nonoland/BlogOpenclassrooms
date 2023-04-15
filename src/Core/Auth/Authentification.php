@@ -7,7 +7,7 @@ use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 
 class Authentification
 {
-    public static function connectUser(string $email, string $password): false|string
+    public static function connectUser(string $email, string $password): false|User
     {
         $dbInstance = Db::getInstance();
 
@@ -25,7 +25,7 @@ class Authentification
             return false;
         }
 
-        $cookieKey = self::generateRandomKey();
+        /*$cookieKey = self::generateRandomKey();
 
         $dbInstance->update(
             User::$definitions['table'],
@@ -33,9 +33,9 @@ class Authentification
                 'cookie_key' => $cookieKey
             ],
             "email = \"$email\""
-        );
+        );*/
 
-        return $cookieKey;
+        return new User($users[0]['id']);
     }
 
     public static function getAuthentificateUser(string $cookieKey): User|false
@@ -58,6 +58,22 @@ class Authentification
     public static function generateRandomKey(): string
     {
         return bin2hex(random_bytes(16));
+    }
+
+    public static function registerNewUser(string $firstname, string $lastname, string $email, string $password): bool
+    {
+        if (User::userExistByEmail($email)) {
+            return false;
+        }
+
+        $user = new User();
+        $user->setFirstname($firstname);
+        $user->setLastname($lastname);
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $user->setRoles(['user']);
+
+        return $user->add();
     }
 
 }

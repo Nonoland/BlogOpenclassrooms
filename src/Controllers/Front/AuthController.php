@@ -6,82 +6,58 @@ use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
 use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends FrontController
 {
 
-
     #[Route(['GET', 'POST'], '/login')]
-    public function login(): void
+    public function login(): Response
     {
         $request = $this->getRequest();
         $messages = [];
 
-        if (!$request->getUser()->isGuest()) {
-            self::redirect('/my_account');
+        $currentUser = $request->getSession()->get('user', new User());
+        if ($currentUser instanceof User && !$currentUser->isGuest()) {
+            return self::redirect('/my_account');
         }
 
-        if ($request->getIsset('action') && $request->getValuePost('action') == 'register') {
+        $action = $request->request->get('action');
+        if ($action === 'register') {
+            $firstname = $request->request->get('firstname', false);
+            $lastname = $request->request->get('lastname', false);
+            $email = $request->request->get('email', false);
+            $password = $request->request->get('password', false);
+            $repeatPassword = $request->request->get('rp_password', false);
 
-            if (!User::userExistByEmail($request->getValuePost('email')) &&
-                ($request->getValuePost('password') == $request->getValuePost('rp_password'))) {
-
-                $user = new User();
-                $user->setFirstname($request->getValuePost('firstname'));
-                $user->setLastname($request->getValuePost('lastname'));
-                $user->setEmail($request->getValuePost('email'));
-                $user->setPassword($request->getValuePost('password'));
-                $user->setRoles(['user']);
-                $user->add();
-
-                $messages[] = 'Inscription réussie !';
+            if ($password === $repeatPassword && is_string($password)) {
+                $result = Authentification::registerNewUser($firstname, $lastname, $email, $password);
+                $messages[] = $result ? "Inscription réussie" : "Erreur lors de l'inscription !";
             }
-        } elseif ($request->getIsset('action') && $request->getValuePost('action') == 'login') {
-            if ($request->getIsset('email') && $request->getIsset('password')) {
+        } elseif ($action === 'login') {
+            $email = $request->request->get('email', false);
+            $password = $request->request->get('password', false);
 
-                $cookieKey = Authentification::connectUser(
-                    $request->getValuePost('email'),
-                    $request->getValuePost('password')
-                );
+            if ($email && $password) {
+                $connectUser = Authentification::connectUser($email, $password);
 
-                if ($cookieKey) {
-                    $request->getCookie()->setAuthentificationCookieKey($cookieKey);
-                    $request->getCookie()->writeCookie();
-                    self::redirect('my_account');
+                if ($connectUser) {
+                    $request->getSession()->set('user', $connectUser);
+                    self::redirect('/my_account');
                 } else {
-                    $messages[] = "Authentification échouée, email et/ou mot de passe incorrect.";
+                    $messages[] = 'Erreur lors de la connexion !';
                 }
+            } else {
+                $messages[] = "Erreur lors de la connexion !";
             }
         }
 
         $templates = $this->getTwig()->load('front/user/login_register.twig');
-        echo $templates->render([
+        $content = $templates->render([
             'messages' => $messages
         ]);
-    }
 
-    #[Route(['GET', 'POST'], '/register')]
-    public function register(): void
-    {
-        $request = $this->getRequest();
-
-        if ($request->getIsset('firstname')
-            && $request->getIsset('lastname')
-            && $request->getIsset('email')
-            && $request->getIsset('password')
-            && $request->getIsset('repeat_password')
-            && ($request->getValuePost('password') == $request->getValuePost('repeat_password'))) {
-
-            $user = new User();
-            $user->setFirstname($request->getValuePost('firstname'));
-            $user->setLastname($request->getValuePost('lastname'));
-            $user->setEmail($request->getValuePost('email'));
-            $user->setPassword($request->getValuePost('password'));
-            $user->setRoles(['user']);
-            $user->add();
-        }
-
-
+        return new Response($content);
     }
 
     #[Route(['GET'], '/logout')]
