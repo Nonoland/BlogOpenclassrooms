@@ -52,29 +52,6 @@ class Post extends ObjectModel
         return $result;
     }
 
-    public static function getPostById(int $idPost): false|Post
-    {
-        $dbInstance = Db::getInstance();
-        $result = $dbInstance->select(self::$definitions['table'], "id = $idPost", [], '', 1);
-
-        if (empty($result)) {
-            return false;
-        }
-
-        $post = new Post();
-        $post->id = (int)$result[0]['id'];
-        $post->slug = $result[0]['slug'];
-        $post->title = $result[0]['title'];
-        $post->description = $result[0]['description'];
-        $post->body = json_decode(htmlspecialchars_decode($result[0]['body'], ENT_QUOTES), true);
-        $post->dateAdd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_add']);
-        $post->dateUpd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_upd']);
-        $post->views = (int)$result[0]['views'];
-        $post->idUser = (int)$result[0]['id_user'];
-
-        return $post;
-    }
-
     public static function getPostBySlug(string $slug): bool|Post
     {
         $dbInstance = Db::getInstance();
@@ -84,18 +61,7 @@ class Post extends ObjectModel
             return false;
         }
 
-        $post = new Post();
-        $post->id = (int)$result[0]['id'];
-        $post->slug = $result[0]['slug'];
-        $post->title = $result[0]['title'];
-        $post->description = $result[0]['description'];
-        $post->body = json_decode(htmlspecialchars_decode($result[0]['body'], ENT_QUOTES), true);
-        $post->dateAdd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_add']);
-        $post->dateUpd = DateTime::createFromFormat(self::DATE_FORMAT, $result[0]['date_upd']);
-        $post->views = (int)$result[0]['views'];
-        $post->idUser = (int)$result[0]['id_user'];
-
-        return $post;
+        return new Post((int)$result[0]['id']);
     }
 
     /**
