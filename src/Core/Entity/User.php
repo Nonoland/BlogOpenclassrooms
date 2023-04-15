@@ -150,12 +150,12 @@ class User extends ObjectModel
         $this->roles[] = $name;
     }
 
-    public function setExpireSession(DateTime $dateExpire)
+    public function setExpireSession(DateTime $dateExpire): void
     {
         $this->expireSession = $dateExpire;
     }
 
-    public function getExpireSession()
+    public function getExpireSession(): DateTime
     {
         return $this->expireSession;
     }
