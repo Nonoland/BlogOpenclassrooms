@@ -17,8 +17,9 @@ class AuthController extends FrontController
         $request = $this->getRequest();
         $messages = [];
 
-        $currentUser = $request->getSession()->get('user', new User());
-        if ($currentUser instanceof User && !$currentUser->isGuest()) {
+        $currentUser = (int)$request->getSession()->get('user', 0);
+        $currentUser = new User($currentUser);
+        if (!$currentUser->isGuest()) {
             return self::redirect('/my_account');
         }
 
@@ -28,7 +29,7 @@ class AuthController extends FrontController
             $lastname = $request->request->get('lastname', false);
             $email = $request->request->get('email', false);
             $password = $request->request->get('password', false);
-            $repeatPassword = $request->request->get('rp_password', false);
+            $repeatPassword = $request->request->get('rp_password',false);
 
             if ($password === $repeatPassword && is_string($password)) {
                 $result = Authentification::registerNewUser($firstname, $lastname, $email, $password);
@@ -42,8 +43,8 @@ class AuthController extends FrontController
                 $connectUser = Authentification::connectUser($email, $password);
 
                 if ($connectUser) {
-                    $request->getSession()->set('user', $connectUser);
-                    self::redirect('/my_account');
+                    $request->getSession()->set('user', $connectUser->getId());
+                    return self::redirect('/my_account');
                 } else {
                     $messages[] = 'Erreur lors de la connexion !';
                 }

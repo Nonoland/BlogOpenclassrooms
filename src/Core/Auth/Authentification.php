@@ -2,8 +2,11 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Auth;
 
+use Cassandra\Date;
+use DateTime;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 
 class Authentification
 {
@@ -25,17 +28,15 @@ class Authentification
             return false;
         }
 
-        /*$cookieKey = self::generateRandomKey();
+        $currentUser = new User($users[0]['id']);
 
-        $dbInstance->update(
-            User::$definitions['table'],
-            [
-                'cookie_key' => $cookieKey
-            ],
-            "email = \"$email\""
-        );*/
+        $expireSession = new DateTime();
+        $expireSession->modify('+1 day');
 
-        return new User($users[0]['id']);
+        $currentUser->setExpireSession($expireSession);
+        $currentUser->update();
+
+        return $currentUser;
     }
 
     public static function getAuthentificateUser(string $cookieKey): User|false
@@ -74,6 +75,21 @@ class Authentification
         $user->setRoles(['user']);
 
         return $user->add();
+    }
+
+    public static function updateSession(Request $request): void
+    {
+        $currentUser = (int)$request->getSession()->get('user', 0);
+        $currentUser = new User($currentUser);
+        if ($currentUser->isGuest()) {
+            return;
+        }
+
+        $dateNow = new DateTime();
+
+        if ($currentUser->getExpireSession()->diff($dateNow)->invert === 0) {
+            $request->getSession()->set('user', 0);
+        }
     }
 
 }

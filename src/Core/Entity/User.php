@@ -2,6 +2,7 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Entity;
 
+use DateTime;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 
 class User extends ObjectModel
@@ -14,7 +15,8 @@ class User extends ObjectModel
             'firstname' => [],
             'email' => [],
             'password' => [],
-            'roles' => []
+            'roles' => [],
+            'expire_session' => []
         ]
     ];
 
@@ -24,6 +26,7 @@ class User extends ObjectModel
     protected string $email = "";
     protected string $password = "";
     protected array $roles = [];
+    protected DateTime $expireSession;
     protected bool $guest;
 
     public function __construct(int $id = 0)
@@ -145,6 +148,16 @@ class User extends ObjectModel
     public function addRoles(string $name): void
     {
         $this->roles[] = $name;
+    }
+
+    public function setExpireSession(DateTime $dateExpire)
+    {
+        $this->expireSession = $dateExpire;
+    }
+
+    public function getExpireSession()
+    {
+        return $this->expireSession;
     }
 
     public function isGuest(): bool

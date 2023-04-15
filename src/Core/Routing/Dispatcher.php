@@ -95,8 +95,8 @@ class Dispatcher
 
             /** @var RouteAccess $routeAccess */
             $routeAccess = $routeAccess[0]->newInstance();
-            /** @var User $currentUser */
-            $currentUser = $this->request->getSession()->get('user', new User());
+            $currentUser = (int)$this->request->getSession()->get('user', 0);
+            $currentUser = new User($currentUser);
             if (!array_intersect($routeAccess->getRoles(), $currentUser->getRoles())) {
                 throw new Exception("You are not authorised to access this page!", 401);
             }
