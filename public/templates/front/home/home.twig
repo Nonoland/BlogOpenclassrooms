@@ -8,14 +8,14 @@
             <div class="col-md-10 col-lg-8 col-xl-7">
                 {% for post in posts %}
                     <div class="post-preview">
-                        <a href="/post/{{ post.slug }}">
-                            <h2 class="post-title">{{ post.title }}</h2>
-                            <h3 class="post-subtitle">{{ post.description|raw }}</h3>
+                        <a href="/post/{{ post.getSlug() }}">
+                            <h2 class="post-title">{{ post.getTitle() }}</h2>
+                            <h3 class="post-subtitle">{{ post.getDescription()|raw }}</h3>
                         </a>
                         <p class="post-meta">
                             Ecrit par
-                            <span style="color: black">{{ getPostAuthorById(post.id_user) }}</span>
-                            le {{ post.date_add|date('m/d/Y') }}
+                            <span style="color: black">{{ getPostAuthorById(post.getIdUser()) }}</span>
+                            le {{ post.getDateAdd()|date('m/d/Y') }}
                         </p>
                     </div>
 
