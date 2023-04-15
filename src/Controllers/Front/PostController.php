@@ -25,21 +25,4 @@ class PostController extends FrontController
 
         return new Response($content);
     }
-
-    #[Route('GET', '/post/{id_post:int}')]
-    public function showPostId(array $params): Response
-    {
-        $post = Post::getPostById($params['id_post']);
-
-        if (!$post) {
-            self::redirect('/');
-        }
-
-        $templates = $this->getTwig()->load('front/post/post.twig');
-        $content = $templates->render([
-            'post' => $post
-        ]);
-
-        return new Response($content);
-    }
 }
