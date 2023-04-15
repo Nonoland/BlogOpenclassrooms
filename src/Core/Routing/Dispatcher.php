@@ -5,6 +5,7 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Routing;
 use Exception;
 use InvalidArgumentException;
 use Nolandartois\BlogOpenclassrooms\Controllers\Controller;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
 use ReflectionClass;
@@ -50,18 +51,21 @@ class Dispatcher
                     $this->response = $this->executeRoute($controller, $route, $matches);
                 } catch (Exception $e) {
 
-                    if ($_ENV['MODE'] == 'DEV') {
-                        echo $e->getMessage();
-                        echo $e->getTraceAsString();
-
-                        return;
-                    }
-
                     switch($e->getCode()) {
-                        case 401: Controller::redirect("/"); break;
-                        case 404: Controller::redirect("/404"); break;
-                        default: Controller::redirect("/500"); break;
+                        case 401: $this->response = Controller::redirect("/"); break;
+                        case 404: $this->response = Controller::redirect("/404"); break;
+                        default: $this->response = Controller::redirect("/500"); break;
                     }
+
+                    if ($_ENV['MODE'] == 'DEV') {
+                        $content = $e->getMessage();
+                        $content .= "<br />";
+                        $content .= $e->getTraceAsString();
+
+                        $this->response = new Response($content, 500);
+                    }
+
+                    $this->response->prepare($this->request)->send();
                 }
 
                 $this->response->prepare($this->request)->send();
@@ -91,9 +95,11 @@ class Dispatcher
 
             /** @var RouteAccess $routeAccess */
             $routeAccess = $routeAccess[0]->newInstance();
-            /*if (!array_intersect($routeAccess->getRoles(), $this->request->getUser()->getRoles())) {
+            /** @var User $currentUser */
+            $currentUser = $this->request->getSession()->get('user', new User());
+            if (!array_intersect($routeAccess->getRoles(), $currentUser->getRoles())) {
                 throw new Exception("You are not authorised to access this page!", 401);
-            }*/
+            }
         }
 
         if ($route->isMutable()) {

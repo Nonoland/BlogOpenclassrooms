@@ -17,9 +17,9 @@ class AuthController extends FrontController
         $request = $this->getRequest();
         $messages = [];
 
-        $currentUser = $request->getSession()->get('user');
+        $currentUser = $request->getSession()->get('user', new User());
         if ($currentUser instanceof User && !$currentUser->isGuest()) {
-            self::redirect('/my_account');
+            return self::redirect('/my_account');
         }
 
         $action = $request->request->get('action');
