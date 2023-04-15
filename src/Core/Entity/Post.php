@@ -35,8 +35,9 @@ class Post extends ObjectModel
     public function add(): bool
     {
         $this->slug = str_replace(" ", "_", $this->title);
-
-        return parent::add();
+        parent::add();
+        $this->slug = $this->id . '_' . $this->slug;
+        return $this->update();
     }
 
     public static function getAllPosts(): array

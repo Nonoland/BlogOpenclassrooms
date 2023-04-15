@@ -9,7 +9,7 @@ class Route
 {
 
     private const REGEX_INT = "[\d+]+";
-    private const REGEX_STRING = "[a-zA-Z]+[a-zA-Z-0-9-_]+";
+    private const REGEX_STRING = "[a-zA-Z0-9_]+";
     private string $route;
     private string $routeRegex;
     private array $methodsHttp;
