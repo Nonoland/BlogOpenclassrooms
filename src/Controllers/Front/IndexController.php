@@ -13,6 +13,7 @@ class IndexController extends FrontController
     public function index(): Response
     {
         $posts = Post::getAllPosts();
+        dump($posts);
 
         $templates = $this->getTwig()->load('front/home/home.twig');
         $content =  $templates->render([

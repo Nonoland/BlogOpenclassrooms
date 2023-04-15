@@ -28,7 +28,9 @@ abstract class Controller
         $this->dispatcher = $dispatcher;
 
         $this->twigLoader = new FilesystemLoader('public/templates');
-        $this->twig = new Environment($this->twigLoader);
+        $this->twig = new Environment($this->twigLoader, [
+            'debug' => true
+        ]);
 
         $this->loadTwigVariables();
     }
@@ -53,6 +55,7 @@ abstract class Controller
 
         $this->twig->addExtension(new RouteExtension($this->dispatcher));
         $this->twig->addExtension(new WPMExtension());
+        $this->twig->addExtension(new \Twig\Extension\DebugExtension());
 
         $this->twig->addFunction(new TwigFunction('getPostAuthorById', function(int $idUser) {
             return Post::getAuthorById($idUser);

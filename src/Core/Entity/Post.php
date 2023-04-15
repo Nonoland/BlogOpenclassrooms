@@ -42,7 +42,13 @@ class Post extends ObjectModel
     public static function getAllPosts(): array
     {
         $dbInstance = Db::getInstance();
-        return $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
+        $result = $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
+
+        foreach ($result as &$row) {
+            $row = new Post($row['id']);
+        }
+
+        return $result;
     }
 
     public static function getPostById(int $idPost): false|Post
@@ -169,6 +175,11 @@ class Post extends ObjectModel
     public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     public static function getAuthorById(int $idUser): string
