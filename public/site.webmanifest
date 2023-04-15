@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "Nolan Dartois Blog",
+  "short_name": "Nolan Dartois Blog",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Un blog parfait",
+  "icons": [
+    {
+      "src": "public/favicon.ico",
+      "sizes": "72x72",
+      "type": "image/ico"
+    }
+  ]
+}
