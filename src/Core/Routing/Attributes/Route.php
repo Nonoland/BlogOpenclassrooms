@@ -26,7 +26,7 @@ class Route
     )
     {
         $this->route = $route;
-        $this->routeRegex = '/^' . str_replace('/', '\/', $this->route) . '$/';
+        $this->routeRegex = '/^' . str_replace('/', '\/', $this->route) . '\/?$/';
 
         $this->methodName = $methodName;
 
