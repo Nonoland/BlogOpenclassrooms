@@ -1,6 +1,5 @@
-let input_post_body = document.querySelector('input[name="post_body"]');
-let form = document.getElementById('form_post');
-let editor_config = {
+const editor_config = {
+    data: {},
     holder: 'post_body',
     tools: {
         header: {
@@ -31,6 +30,8 @@ let editor_config = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    const input_post_body = document.querySelector('input[name="post_body"]');
+    const form = document.getElementById('form_post');
 
     //Si edit
     if (input_post_body.value) {
@@ -51,9 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
         editor.save().then((outputData) => {
             input_post_body.value = JSON.stringify(outputData.blocks);
 
-            let formData = new FormData(form);
+            const formData = new FormData(form);
 
-            let url = form.dataset.action === 'new' ? '/admin/ajax/posts/new' : '/admin/ajax/posts/edit/'+form.dataset.id;
+            const url = form.dataset.action === 'new' ? '/admin/ajax/posts/new' : '/admin/ajax/posts/edit/'+form.dataset.id;
 
             fetch(
                 url,
