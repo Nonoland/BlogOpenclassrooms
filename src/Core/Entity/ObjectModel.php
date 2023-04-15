@@ -38,7 +38,7 @@ abstract class ObjectModel
                 continue;
             }
 
-            if ($name == 'dateAdd' || $name == 'dateUpd') {
+            if ($name == 'dateAdd' || $name == 'dateUpd' || $name == 'expireSession') {
                 $this->{$name} = DateTime::createFromFormat(self::DATE_FORMAT, $value);
             } elseif (is_array($this->{$name})) {
                 $this->{$name} = json_decode($value, true);

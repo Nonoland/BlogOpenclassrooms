@@ -45,6 +45,8 @@ if (!$request->hasSession()) {
     $request->setSession($session);
 }
 
+Authentification::updateSession($request);
+
 $dispatcher = new Dispatcher($request);
 
 try {

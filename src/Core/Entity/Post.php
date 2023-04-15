@@ -177,7 +177,7 @@ class Post extends ObjectModel
         $this->idUser = $idUser;
     }
 
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }

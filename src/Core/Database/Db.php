@@ -2,6 +2,7 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Database;
 
+use Nolandartois\BlogOpenclassrooms\Core\Entity\ObjectModel;
 use PDO;
 use PDOStatement;
 
@@ -107,7 +108,11 @@ class Db
                 function (mixed $value, string $name) {
                     if (is_string($value)) {
                         $value = "'$value'";
+                    } elseif ($value instanceof \DateTime) {
+                        $value = $value->format(ObjectModel::DATE_FORMAT);
+                        $value = "\"$value\"";
                     }
+
                     return "$name = $value";
                 }, $values, array_keys($values)
             )),

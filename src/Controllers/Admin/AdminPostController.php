@@ -40,7 +40,7 @@ class AdminPostController extends AdminController
         $request = $this->getRequest();
 
         /** @var User $user */
-        $user = $request->getSession()->get('user', false);
+        $user = (int)$request->getSession()->get('user', 0);
         $postTitle = $request->request->get('post_title', false);
         $postDescription = $request->request->get('post_description', false);
         $postBody = $request->request->get('post_body', false);
@@ -48,6 +48,8 @@ class AdminPostController extends AdminController
         if (!$postTitle || !$postDescription || !$postBody || !$user) {
             return $this->displayAjax(false);
         }
+
+        $user = new User((int)$user);
 
         $post = new Post();
         $post->setIdUser($user->getId());
@@ -70,7 +72,7 @@ class AdminPostController extends AdminController
         $request = $this->getRequest();
 
         /** @var User $user */
-        $user = $request->getSession()->get('user', false);
+        $user = (int)$request->getSession()->get('user', 0);
         $postTitle = $request->request->get('post_title', false);
         $postDescription = $request->request->get('post_description', false);
         $postBody = $request->request->get('post_body', false);
@@ -78,6 +80,8 @@ class AdminPostController extends AdminController
         if (!($post = new Post($params['id_post'])) && (!$postTitle || !$postDescription || $postBody || !$user)) {
             return $this->displayAjax(false);
         }
+
+        $user = new User((int)$user);
 
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
