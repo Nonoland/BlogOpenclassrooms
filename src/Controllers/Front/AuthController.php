@@ -62,9 +62,16 @@ class AuthController extends FrontController
     }
 
     #[Route(['GET'], '/logout')]
-    public function logout(): void
+    public function logout(): Response
     {
+        $currentUser = $this->getRequest()->getSession()->get('user', false);
+        if (!$currentUser) {
+            return self::redirect('/');
+        }
 
+        Authentification::logoutUser($currentUser);
+
+        return self::redirect('/');
     }
 
     #[Route(['GET'], '/my_acount')]
