@@ -39,6 +39,19 @@ class Authentification
         return $currentUser;
     }
 
+    public static function logoutUser(int $idUser): bool
+    {
+        $expireSession = new DateTime();
+
+        $user = new User($idUser);
+        if ($user->isGuest()) {
+            return false;
+        }
+
+        $user->setExpireSession($expireSession);
+        return $user->update();
+    }
+
     public static function getAuthentificateUser(string $cookieKey): User|false
     {
         $dbInstance = Db::getInstance();
