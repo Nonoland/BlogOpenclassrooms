@@ -5,24 +5,24 @@
 {% endblock %}
 
 {% block page_content %}
-    <form action="" method="post" class="form" id="form_post" data-id="{{ post.id }}" data-action="edit" data-retarget-url="{{ route('admin_posts') }}">
-        <div class="form_group">
-            <label for="post_title">Titre de l'article</label>
-            <input type="text" name="post_title" id="post_title" value="{{ post.title }}" required>
+    <form action="" method="post" class="row g-3 needs-validation" id="form_post" data-id="{{ post.id }}" data-action="edit" data-retarget-url="{{ route('admin_posts') }}">
+        <div class="col-md-12">
+            <label for="post_title" class="form-label">Titre de l'article</label>
+            <input type="text" class="form-control" name="post_title" id="post_title" value="{{ post.title }}" required>
         </div>
-        <div class="form_group">
-            <label for="post_description">Description de l'article</label>
-            <textarea name="post_description" id="post_description" cols="30" rows="3" required>{{ post.description }}</textarea>
+        <div class="col-md-12">
+            <label for="post_description" class="form-label">Description de l'article</label>
+            <textarea name="post_description" class="form-control" id="post_description" cols="30" rows="3" required>{{ post.description }}</textarea>
         </div>
-        <div class="form_group">
-            <label for="post_body">Texte de l'article</label>
+        <div class="col-md-12">
+            <label for="post_body" class="form-label">Texte de l'article</label>
             <input type="hidden" name="post_body" value="{{ post.body|json_encode }}">
             <div id="post_body"></div>
         </div>
-        <button type="submit" name="post_submit">Enregistrer</button>
+        <button class="btn btn-primary" type="submit" name="post_submit">Enregistrer</button>
     </form>
 {% endblock %}
 
 {% block javascript %}
-    <script src="/public/assets/js/admin/admin_editor_post.js"></script>
+    <script src="/public/assets/admin/js/admin_editor_post.js"></script>
 {% endblock %}
