@@ -5,35 +5,35 @@
 {% endblock %}
 
 {% block page_content %}
-    <form action="" method="post" class="form">
-        <div class="form_group">
-            <label for="blog_name">Nom du blog</label>
-            <input type="text" name="blog_name" id="blog_name" value="{{ blog_name }}" required />
+    <form action="" method="post" class="row g-3 needs-validation">
+        <div class="col-md-12">
+            <label for="blog_name" class="form-label">Nom du blog</label>
+            <input type="text" class="form-control" name="blog_name" id="blog_name" value="{{ blog_name }}" required />
         </div>
-        <div class="form_group">
-            <label for="blog_domain">Nom de domaine</label>
-            <input type="text" name="blog_domain" id="blog_domain" value="{{ blog_domain }}" required />
+        <div class="col-md-12">
+            <label for="blog_domain" class="form-label">Nom de domaine</label>
+            <input type="text" class="form-control" name="blog_domain" id="blog_domain" value="{{ blog_domain }}" required />
         </div>
-        <div class="form_group">
-            <label for="words_per_minutes">Mots par minutes</label>
-            <input type="text" name="words_per_minutes" id="words_per_minutes" value="{{ words_per_minutes }}" />
+        <div class="col-md-12">
+            <label for="words_per_minutes" class="form-label">Mots par minutes</label>
+            <input type="text" class="form-control" name="words_per_minutes" id="words_per_minutes" value="{{ words_per_minutes }}" />
         </div>
-        <div class="form_group">
-            <label for="copyright">Copyright</label>
-            <input type="text" name="copyright" id="copyright" value="{{ copyright }}" />
+        <div class="col-md-12">
+            <label for="copyright" class="form-label">Copyright</label>
+            <input type="text" class="form-control" name="copyright" id="copyright" value="{{ copyright }}" />
         </div>
-        <div class="form_group">
-            <label for="twitter_url">Url vers compte Twitter</label>
-            <input type="text" name="twitter_url" id="twitter_url" value="{{ twitter_url }}" />
+        <div class="col-md-12">
+            <label for="twitter_url" class="form-label">Url vers compte Twitter</label>
+            <input type="text" class="form-control" name="twitter_url" id="twitter_url" value="{{ twitter_url }}" />
         </div>
-        <div class="form_group">
-            <label for="facebook_url">Url vers Facebook</label>
-            <input type="text" name="facebook_url" id="facebook_url" value="{{ facebook_url }}" />
+        <div class="col-md-12">
+            <label for="facebook_url" class="form-label">Url vers Facebook</label>
+            <input type="text" class="form-control" name="facebook_url" id="facebook_url" value="{{ facebook_url }}" />
         </div>
-        <div class="form_group">
-            <label for="github_url">Url vers Github</label>
-            <input type="text" name="github_url" id="github_url" value="{{ github_url }}" />
+        <div class="col-md-12">
+            <label for="github_url" class="form-label">Url vers Github</label>
+            <input type="text" class="form-control" name="github_url" id="github_url" value="{{ github_url }}" />
         </div>
-        <button type="submit" name="user_submit">Enregistrer</button>
+        <button class="btn btn-primary" type="submit" name="user_submit">Enregistrer</button>
     </form>
 {% endblock %}

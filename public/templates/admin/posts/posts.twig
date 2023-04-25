@@ -5,38 +5,33 @@
 {% endblock %}
 
 {% block page_content %}
-    <section class="list">
-        <header class="tools">
-            <a href="{{ route('admin_posts_new') }}">Nouveau post</a>
-        </header>
-
-        <table>
-            <thead>
+    <a href="{{ route('admin_posts_new') }}">Nouveau post</a>
+    <table class="table table-hover my-0">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Temps de lecture</th>
+            <th>Auteur</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Temps de lecture</th>
-                <th>Auteur</th>
-                <th>Action</th>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title|raw }}</td>
+                <td>
+                    {% set readingTime = getReadingTime(post.body) %}
+                    {% if readingTime == 0 %}Quelque secondes{% else %}{{ readingTime }} minutes{% endif %}
+                </td>
+                <td>{{ getPostAuthorById(post.idUser) }}</td>
+                <td>
+                    <a href="/admin/posts/edit/{{ post.id }}">Editer</a>
+                    <a href="/admin/posts/delete/{{ post.id }}">Supprimer</a>
+                </td>
             </tr>
-            </thead>
-
-            <tbody>
-            {% for post in posts %}
-                <tr>
-                    <td style="text-align: center">{{ post.id }}</td>
-                    <td>{{ post.title|raw }}</td>
-                    <td style="text-align: center">
-                        {% set readingTime = getReadingTime(post.body) %}
-                        {% if readingTime == 0 %}Quelque secondes{% else %}{{ readingTime }} minutes{% endif %}
-                    </td>
-                    <td style="text-align: center">{{ getPostAuthorById(post.idUser) }}</td>
-                    <td style="text-align: center"><a href="/admin/posts/edit/{{ post.id }}">Editer</a><a href="/admin/posts/delete/{{ post.id }}">Supprimer</a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-    </section>
-
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
