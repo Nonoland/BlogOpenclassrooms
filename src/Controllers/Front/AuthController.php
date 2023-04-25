@@ -29,7 +29,7 @@ class AuthController extends FrontController
             $lastname = $request->request->get('lastname', false);
             $email = $request->request->get('email', false);
             $password = $request->request->get('password', false);
-            $repeatPassword = $request->request->get('rp_password',false);
+            $repeatPassword = $request->request->get('rp_password', false);
 
             if ($password === $repeatPassword && is_string($password)) {
                 $result = Authentification::registerNewUser($firstname, $lastname, $email, $password);
@@ -74,9 +74,41 @@ class AuthController extends FrontController
         return self::redirect('/');
     }
 
-    #[Route(['GET'], '/my_acount')]
-    public function myaccount(): void
+    #[Route(['GET', 'POST'], '/my_account')]
+    public function myaccount(): Response
     {
+        $request = $this->getRequest();
+        /** @var User $currentUser */
+        $currentUser = new User($request->getSession()->get('user', 0));
 
+        if ($currentUser->isGuest()) {
+            return self::redirect('/login');
+        }
+
+        if ($request->request->has('action') && $request->request->get('action') == 'informations') {
+            if ($request->request->has('firstname') &&
+                $request->request->has('lastname') &&
+                $request->request->has('email')) {
+
+                $currentUser->setFirstname($request->request->get('firstname', $currentUser->getFirstname()));
+                $currentUser->setLastname($request->request->get('lastname', $currentUser->getLastname()));
+                $currentUser->setEmail($request->request->get('email', $currentUser->getEmail()));
+
+                $currentUser->update();
+            }
+        } elseif ($request->request->has('action') && $request->request->get('action') == 'password') {
+            if (($request->request->get('new_password', '') && $request->request->get('repeat_new_password', '')) && strlen($request->request->get('new_password', '')) > 8) {
+                $currentUser->setPassword($request->request->get('new_password'));
+
+                $currentUser->update();
+            }
+        }
+
+        $templates = $this->getTwig()->load('front/user/my_account.twig');
+        $content = $templates->render([
+            'currentUser' => $currentUser
+        ]);
+
+        return new Response($content);
     }
 }
