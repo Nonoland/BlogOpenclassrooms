@@ -150,6 +150,11 @@ class User extends ObjectModel
         $this->roles[] = $name;
     }
 
+    public function hasRole(string $name): bool
+    {
+        return in_array($name, $this->roles);
+    }
+
     public function setExpireSession(DateTime $dateExpire): void
     {
         $this->expireSession = $dateExpire;

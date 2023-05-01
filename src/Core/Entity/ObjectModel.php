@@ -32,7 +32,9 @@ abstract class ObjectModel
 
         foreach ($result as $name => $value) {
             $name = $this->snakeToCamel($name);
-            $value = htmlspecialchars_decode($value, ENT_QUOTES);
+            if (is_string($value)) {
+                $value = htmlspecialchars_decode($value, ENT_QUOTES);
+            }
 
             if (!property_exists(get_class($this), $name)) {
                 continue;
@@ -42,6 +44,8 @@ abstract class ObjectModel
                 $this->{$name} = DateTime::createFromFormat(self::DATE_FORMAT, $value);
             } elseif (is_array($this->{$name})) {
                 $this->{$name} = json_decode($value, true);
+            } elseif (is_int($this->{$name})) {
+                $this->{$name} = (int)$value;
             } else {
                 $this->{$name} = $value;
             }

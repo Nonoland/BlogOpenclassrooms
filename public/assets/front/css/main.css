@@ -1,1 +1,14 @@
 @import "styles.css";
+.card-body {
+  position: relative;
+}
+.card-body .comment_id {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  margin: 0;
+  line-height: 1em;
+}
+.child_comment {
+  margin-left: 50px;
+}

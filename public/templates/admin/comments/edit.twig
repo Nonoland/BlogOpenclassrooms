@@ -1,0 +1,48 @@
+{% extends '/admin/page.twig' %}
+
+{% block page_title %}
+    Utilisateurs - Modification d'un commentaire'
+{% endblock %}
+
+{% block page_content %}
+    <form action="" method="post" class="row g-3 needs-validation">
+        <div class="col-md-12">
+            <label for="comment_title" class="form-label">Titre du commentaire</label>
+            <input type="text" class="form-control" name="comment_title" id="comment_title" value="{{ comment.title }}" required>
+        </div>
+        <div class="col-md-12">
+            <label for="comment_body" class="form-label">Message</label>
+            <textarea type="text" class="form-control" name="comment_body" id="comment_body" required>{{ comment.body }}</textarea>
+        </div>
+        <div class="col-md-12">
+            <label for="comment_valid" class="form-label">Valide ?</label>
+            <input type="checkbox" class="form-check-input" name="comment_valid" id="comment_valid" {% if comment.valid %}checked{% endif %}>
+        </div>
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary" name="comment_submit">Enregistrer</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block page_extra %}
+    {% if comment.idParent != null %}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h3 mb-3">En réponse à ce commentaire <a href="/admin/comments/edit/{{ comment.idParent }}">Editer</a></h1>
+
+                        {% set commentParent = comment.getParentComment() %}
+
+                        <p>{{ commentParent.title }}</p>
+                        <p>{{ commentParent.body }}</p>
+                        <p>De <a href="/admin/users/edit/{{ commentParent.idUser }}">{{ getPostAuthorById(commentParent.idUser) }}</a></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}

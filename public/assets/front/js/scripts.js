@@ -14,7 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
             if (currentTop > 0 && mainNav.classList.contains('is-fixed')) {
                 mainNav.classList.add('is-visible');
             } else {
-                console.log(123);
                 mainNav.classList.remove('is-visible', 'is-fixed');
             }
         } else {
@@ -26,4 +25,29 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         scrollPos = currentTop;
     });
+
+    //Comment Response
+    const commentForm = document.querySelector('.comment_form');
+    const commentsAnswer = document.querySelectorAll(".comment a.comment_answer");
+    commentsAnswer.forEach((answer) => {
+        answer.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            if ("open" in answer.dataset) {
+                return;
+            }
+            answer.dataset.open = true;
+
+            const comment = document.getElementById(`comment_${answer.dataset.commentId}`);
+            if (comment === undefined) {
+                return;
+            }
+
+            const newCommentForm = commentForm.cloneNode(true);
+            newCommentForm.classList.add('child_comment');
+            newCommentForm.querySelector('input[name="comment-id"]').value = answer.dataset.commentId;
+
+            comment.insertAdjacentElement('afterend', newCommentForm );
+        })
+    })
 })

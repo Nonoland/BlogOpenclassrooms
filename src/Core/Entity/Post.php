@@ -26,10 +26,16 @@ class Post extends ObjectModel
     protected array $body = [];
     protected int $views = 0;
     protected int $idUser = 0;
+    protected array $comments = [];
 
     public function __construct(int $id = 0)
     {
         parent::__construct($id);
+
+        //Load comments
+        if ($this->id != 0) {
+            $this->comments = Comment::getCommentsByIdPost($this->id);
+        }
     }
 
     public function add(): bool
@@ -147,6 +153,11 @@ class Post extends ObjectModel
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function getComments(): array
+    {
+        return $this->comments;
     }
 
     public static function getAuthorById(int $idUser): string
