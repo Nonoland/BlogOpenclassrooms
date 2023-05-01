@@ -147,7 +147,7 @@ class Comment extends ObjectModel
 
     public function getParentComment(): Comment|bool
     {
-        if ($this->idParent == null) {
+        if ($this->idParent === null) {
             return false;
         }
 

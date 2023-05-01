@@ -106,8 +106,6 @@ abstract class ObjectModel
             }
         }
 
-        dump($data);
-
         return $dbInstance->update(
             static::$definitions['table'],
             $data,
