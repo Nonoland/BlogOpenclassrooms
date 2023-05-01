@@ -39,5 +39,36 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <h2 class="mb-4">Commentaires</h2>
+
+                <div class="card mb-4 comment_form">
+                    <div class="card-body">
+                        <form action="/post/{{ post.slug }}/comment" method="post" class="row g-3 needs-validation">
+                            <input type="hidden" name="comment-id" value="">
+                            <div class="mb-3">
+                                <label for="comment-title" class="form-label">Titre du commentaire</label>
+                                <input name="comment_title" type="text" class="form-control" id="comment-title" placeholder="Titre du commentaire" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment-message" class="form-label">Message</label>
+                                <textarea name="comment_body" class="form-control" id="comment-message" rows="3" placeholder="Votre commentaire" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Envoyer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {% for comment in post.getComments() %}
+                    {% if comment.valid %}
+                        {% include '/front/post/_partials/comment.twig' %}
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
     </div>
 {% endblock %}

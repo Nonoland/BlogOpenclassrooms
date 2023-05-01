@@ -111,6 +111,10 @@ class Db
                     } elseif ($value instanceof \DateTime) {
                         $value = $value->format(ObjectModel::DATE_FORMAT);
                         $value = "\"$value\"";
+                    } elseif ($value === null) {
+                        $value = "null";
+                    } elseif (is_bool($value)) {
+                        $value = $value ? 1 : 0;
                     }
 
                     return "$name = $value";

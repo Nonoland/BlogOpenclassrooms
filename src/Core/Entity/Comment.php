@@ -2,12 +2,14 @@
 
 namespace Nolandartois\BlogOpenclassrooms\Core\Entity;
 
+use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
+
 class Comment extends ObjectModel
 {
 
     public static array $definitions = [
         'table' => 'comment',
-        'value' => [
+        'values' => [
             'title' => [],
             'body' => [],
             'valid' => [],
@@ -17,12 +19,12 @@ class Comment extends ObjectModel
         ]
     ];
 
-    protected string $title;
-    protected string $body;
-    protected bool $valid;
-    protected int $idParent;
-    protected int $idPost;
-    protected int $idUser;
+    protected string $title = "";
+    protected string $body = "";
+    protected bool $valid = false;
+    protected ?int $idParent = null;
+    protected ?int $idPost = null;
+    protected ?int $idUser = null;
 
     /**
      * @return string
@@ -75,7 +77,7 @@ class Comment extends ObjectModel
     /**
      * @return int
      */
-    public function getIdParent(): int
+    public function getIdParent(): int|null
     {
         return $this->idParent;
     }
@@ -83,7 +85,7 @@ class Comment extends ObjectModel
     /**
      * @param int $idParent
      */
-    public function setIdParent(int $idParent): void
+    public function setIdParent(?int $idParent): void
     {
         $this->idParent = $idParent;
     }
@@ -118,5 +120,72 @@ class Comment extends ObjectModel
     public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
+    }
+
+    public function getChildren(): array
+    {
+        $dbInstance = Db::getInstance();
+        $comments = $dbInstance->select(
+            "comment",
+            "id_parent = $this->id",
+            ['id'],
+            'date_add ASC'
+        );
+
+        if (empty($comments)) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($comments as $comment) {
+            $result[] = new Comment($comment['id']);
+        }
+
+        return $result;
+    }
+
+    public function getParentComment(): Comment|bool
+    {
+        if ($this->idParent == null) {
+            return false;
+        }
+
+        return new Comment($this->idParent);
+    }
+
+    public static function getCommentsByIdPost(int $idPost, bool $deep = false): array
+    {
+        $dbInstance = Db::getInstance();
+        $comments = $dbInstance->select(
+            "comment",
+            "id_post = $idPost" . ($deep ?: " AND id_parent IS NULL"),
+            ['id'],
+            'date_add ASC'
+        );
+
+        if (empty($comments)) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($comments as $comment) {
+            $result[] = new Comment($comment['id']);
+        }
+
+        return $result;
+    }
+
+    public static function getAllComments(): array
+    {
+        $dbInstance = Db::getInstance();
+        $result = $dbInstance->select(self::$definitions['table'], '', [], 'date_add DESC');
+
+        foreach ($result as &$row) {
+            $row = new Comment($row['id']);
+        }
+
+        return $result;
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminCommentController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminPostController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminSettingsController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminUserController;
@@ -53,6 +54,7 @@ try {
     $dispatcher->registerController(PostController::class);
     $dispatcher->registerController(DashboardController::class);
     $dispatcher->registerController(AdminPostController::class);
+    $dispatcher->registerController(AdminCommentController::class);
     $dispatcher->registerController(AdminUserController::class);
     $dispatcher->registerController(AdminSettingsController::class);
 } catch(Exception $e) {

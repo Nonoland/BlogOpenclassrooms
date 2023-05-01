@@ -1,0 +1,33 @@
+{% extends '/admin/page.twig' %}
+
+{% block page_title %}
+    Commentaires
+{% endblock %}
+
+{% block page_content %}
+    <table class="table table-hover my-0">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Valide</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.title|raw }}</td>
+                <td>{{ getPostAuthorById(comment.idUser) }}</td>
+                <td>{% if comment.valid %}Valide{% else %}Non valide{% endif %}</td>
+                <td>
+                    <a href="/admin/comments/edit/{{ comment.id }}">Editer</a>
+                    <a href="/admin/comments/delete/{{ comment.id }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
