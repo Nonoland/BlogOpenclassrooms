@@ -1,0 +1,31 @@
+{% extends '/admin/page.twig' %}
+
+{% block page_title %}
+    Contact
+{% endblock %}
+
+{% block page_content %}
+    <table class="table table-hover my-0">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.id }}</td>
+                <td>{{ contact.title }}</td>
+                <td>{{ contact.email }}</td>
+                <td>
+                    <a href="/admin/contact/view/{{ contact.id }}">Voir</a>
+                    <a href="/admin/contact/delete/{{ contact.id }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
