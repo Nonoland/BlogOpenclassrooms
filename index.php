@@ -22,6 +22,8 @@ require_once __DIR__.'/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+define('IMAGE_POST_PATH', '/app/public/uploads/posts');
+
 /* SCSS */
 if ($_ENV['MODE'] == 'DEV') {
     $compilerSCSS = new Compiler();

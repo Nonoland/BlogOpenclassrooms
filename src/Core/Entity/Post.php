@@ -160,6 +160,16 @@ class Post extends ObjectModel
         return $this->comments;
     }
 
+    public function imageExist(): string
+    {
+        $file = IMAGE_POST_PATH . '/' . $this->slug . '.webp';
+        if (!file_exists($file)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function getAuthorById(int $idUser): string
     {
         $user = new User($idUser);

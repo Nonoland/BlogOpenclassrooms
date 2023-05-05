@@ -7,6 +7,7 @@ use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\RouteAccess;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminPostController extends AdminController
@@ -63,6 +64,18 @@ class AdminPostController extends AdminController
         $post->setTitle($postTitle);
         $post->add();
 
+        if ($request->files->has('post_image')) {
+            /** @var UploadedFile $image */
+            $image = $request->files->get('post_image');
+
+            if ($image->getSize() > 500000) {
+                return $this->displayAjax(false);
+            }
+
+            $path = IMAGE_POST_PATH . '/' . $post->getSlug() . '.webp';
+            $this->convertImageToWebP($image, $path);
+        }
+
         return $this->displayAjax(true);
     }
 
@@ -93,6 +106,20 @@ class AdminPostController extends AdminController
         );
         $post->update();
 
+        if ($request->files->has('post_image')) {
+            /** @var UploadedFile $image */
+            $image = $request->files->get('post_image');
+
+            if ($image->getSize() > 500000) {
+                return $this->displayAjax(false);
+            }
+
+            $path = IMAGE_POST_PATH . '/' . $post->getSlug() . '.webp';
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            $this->convertImageToWebP($image, $path);
+        }
 
         return $this->displayAjax(true);
     }
@@ -121,5 +148,31 @@ class AdminPostController extends AdminController
         $post->delete();
 
         return self::redirect('/admin/posts');
+    }
+
+    function convertImageToWebP(UploadedFile $sourceImage, $outputImage, $quality = 80)
+    {
+        $imageInfo = getimagesize($sourceImage->getPathname());
+        $imageType = $imageInfo[2];
+
+        switch ($imageType) {
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($sourceImage->getPathname());
+                break;
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($sourceImage->getPathname());
+                break;
+            case IMAGETYPE_GIF:
+                $image = imagecreatefromgif($sourceImage->getPathname());
+                break;
+            default:
+                return false;
+        }
+
+        $result = imagewebp($image, $outputImage, $quality);
+
+        imagedestroy($image);
+
+        return $result;
     }
 }
