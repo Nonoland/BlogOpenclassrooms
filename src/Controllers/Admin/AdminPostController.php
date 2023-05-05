@@ -64,7 +64,7 @@ class AdminPostController extends AdminController
         $post->setTitle($postTitle);
         $post->add();
 
-        if ($request->files->has('post_image')) {
+        if ($request->files->has('post_image') && $request->files->get('post_image')) {
             /** @var UploadedFile $image */
             $image = $request->files->get('post_image');
 
@@ -89,8 +89,9 @@ class AdminPostController extends AdminController
         $postTitle = $request->request->get('post_title', false);
         $postDescription = $request->request->get('post_description', false);
         $postBody = $request->request->get('post_body', false);
+        $postSlug = $request->request->get('post_slug', false);
 
-        if (!($post = new Post($params['id_post'])) && (!$postTitle || !$postDescription || $postBody || !$user)) {
+        if (!($post = new Post($params['id_post'])) && (!$postTitle || !$postDescription || $postBody || !$user || !$postSlug)) {
             return $this->displayAjax(false);
         }
 
@@ -104,9 +105,10 @@ class AdminPostController extends AdminController
                 true
             )
         );
+        $post->setSlug($postSlug);
         $post->update();
 
-        if ($request->files->has('post_image')) {
+        if ($request->files->has('post_image') && $request->files->get('post_image')) {
             /** @var UploadedFile $image */
             $image = $request->files->get('post_image');
 

@@ -155,6 +155,11 @@ class Post extends ObjectModel
         return $this->slug;
     }
 
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
     public function getComments(): array
     {
         return $this->comments;
