@@ -15,6 +15,10 @@
             <input type="file" class="form-control" name="post_image" id="post_image">
         </div>
         <div class="col-md-12">
+            <label for="post_slug">Permalien</label>
+            <input type="text" class="form-control" name="post_slug" id="post_slug" value="{{ post.slug }}">
+        </div>
+        <div class="col-md-12">
             <label for="post_description" class="form-label">Description de l'article</label>
             <textarea name="post_description" class="form-control" id="post_description" cols="30" rows="3" required>{{ post.description }}</textarea>
         </div>
