@@ -72,7 +72,7 @@ class AdminPostController extends AdminController
                 return $this->displayAjax(false);
             }
 
-            $path = IMAGE_POST_PATH . '/' . $post->getSlug() . '.webp';
+            $path = $_ENV['IMAGE_POST_PATH'] . '/' . $post->getSlug() . '.webp';
             $this->convertImageToWebP($image, $path);
         }
 
@@ -114,7 +114,7 @@ class AdminPostController extends AdminController
                 return $this->displayAjax(false);
             }
 
-            $path = IMAGE_POST_PATH . '/' . $post->getSlug() . '.webp';
+            $path = $_ENV['IMAGE_POST_PATH'] . '/' . $post->getSlug() . '.webp';
             if (file_exists($path)) {
                 unlink($path);
             }

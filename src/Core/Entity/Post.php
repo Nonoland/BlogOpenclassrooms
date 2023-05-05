@@ -162,7 +162,7 @@ class Post extends ObjectModel
 
     public function imageExist(): string
     {
-        $file = IMAGE_POST_PATH . '/' . $this->slug . '.webp';
+        $file = $_ENV['IMAGE_POST_PATH'] . '/' . $this->slug . '.webp';
         if (!file_exists($file)) {
             return false;
         }

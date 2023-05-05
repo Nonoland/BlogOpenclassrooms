@@ -52,7 +52,7 @@ abstract class Controller
         $this->twig->addGlobal('githubUrl', Configuration::getConfiguration('github_url'));
         $this->twig->addGlobal('facebookUrl', Configuration::getConfiguration('facebook_url'));
         $this->twig->addGlobal('copyright', Configuration::getConfiguration('copyright'));
-        $this->twig->addGlobal('IMAGE_POST_PATH', IMAGE_POST_PATH);
+        $this->twig->addGlobal('IMAGE_POST_PATH', $_ENV['IMAGE_POST_PATH']);
 
         $this->twig->addExtension(new RouteExtension($this->dispatcher));
         $this->twig->addExtension(new WPMExtension());
