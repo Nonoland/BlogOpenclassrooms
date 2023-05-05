@@ -73,7 +73,7 @@ class AdminPostController extends AdminController
             }
 
             $path = $_ENV['IMAGE_POST_PATH'] . '/' . $post->getSlug() . '.webp';
-            $this->convertImageToWebP($image, $path);
+            self::convertImageToWebP($image, $path);
         }
 
         return $this->displayAjax(true);
@@ -118,7 +118,7 @@ class AdminPostController extends AdminController
             if (file_exists($path)) {
                 unlink($path);
             }
-            $this->convertImageToWebP($image, $path);
+            self::convertImageToWebP($image, $path);
         }
 
         return $this->displayAjax(true);
@@ -150,7 +150,7 @@ class AdminPostController extends AdminController
         return self::redirect('/admin/posts');
     }
 
-    function convertImageToWebP(UploadedFile $sourceImage, string $outputImage, int $quality = 80): bool
+    public static function convertImageToWebP(UploadedFile $sourceImage, string $outputImage, int $quality = 80): bool
     {
         $imageInfo = getimagesize($sourceImage->getPathname());
         $imageType = $imageInfo[2];
