@@ -1,6 +1,7 @@
 <?php
 
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminCommentController;
+use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminContactController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminPostController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminSettingsController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Admin\AdminUserController;
@@ -9,7 +10,6 @@ use Nolandartois\BlogOpenclassrooms\Controllers\Front\AuthController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Front\IndexController;
 use Nolandartois\BlogOpenclassrooms\Controllers\Front\PostController;
 use Nolandartois\BlogOpenclassrooms\Core\Auth\Authentification;
-use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use ScssPhp\ScssPhp\Compiler;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -57,6 +57,7 @@ try {
     $dispatcher->registerController(AdminCommentController::class);
     $dispatcher->registerController(AdminUserController::class);
     $dispatcher->registerController(AdminSettingsController::class);
+    $dispatcher->registerController(AdminContactController::class);
 } catch(Exception $e) {
     echo $e->getMessage();
 }

@@ -3,6 +3,7 @@
 namespace Nolandartois\BlogOpenclassrooms\Controllers\Front;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\FrontController;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\Contact;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +23,20 @@ class IndexController extends FrontController
         return new Response($content);
     }
 
-    #[Route('GET', '/contact')]
+    #[Route(['GET', 'POST'], '/contact')]
     public function contact(): Response
     {
+        $request = $this->getRequest()->request;
+        $a = ['email', 'message', 'subject'];
+
+        if (array_intersect($a, array_keys($request->all())) == $a) {
+            $contact = new Contact();
+            $contact->setEmail($request->get('email'));
+            $contact->setTitle($request->get('subject'));
+            $contact->setMessage($request->get('message'));
+            $contact->add();
+        }
+
         $templates = $this->getTwig()->load('front/user/contact.twig');
         $content = $templates->render([]);
 

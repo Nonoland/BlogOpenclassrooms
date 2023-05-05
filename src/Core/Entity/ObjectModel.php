@@ -5,7 +5,7 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Entity;
 use DateTime;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 
-abstract class ObjectModel
+class ObjectModel
 {
     const DATE_FORMAT = 'Y-m-d H:i:s';
     public static array $definitions = [
@@ -144,5 +144,20 @@ abstract class ObjectModel
     public function getDateUpd(): DateTime
     {
         return $this->dateUpd;
+    }
+
+    public static function getAll(): false|array
+    {
+        $currentClass = get_called_class();
+        $currentObject = new $currentClass();
+
+        $dbInstance = Db::getInstance();
+        $result = $dbInstance->select($currentObject::$definitions['table'], '', [], 'date_add DESC');
+
+        foreach ($result as &$row) {
+            $row = new $currentClass($row['id']);
+        }
+
+        return $result;
     }
 }
