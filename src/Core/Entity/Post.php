@@ -160,7 +160,7 @@ class Post extends ObjectModel
         return $this->comments;
     }
 
-    public function imageExist(): string
+    public function imageExist(): bool
     {
         $file = $_ENV['IMAGE_POST_PATH'] . '/' . $this->slug . '.webp';
         if (!file_exists($file)) {
