@@ -150,7 +150,7 @@ class AdminPostController extends AdminController
         return self::redirect('/admin/posts');
     }
 
-    function convertImageToWebP(UploadedFile $sourceImage, $outputImage, $quality = 80): bool
+    function convertImageToWebP(UploadedFile $sourceImage, string $outputImage, int $quality = 80): bool
     {
         $imageInfo = getimagesize($sourceImage->getPathname());
         $imageType = $imageInfo[2];
