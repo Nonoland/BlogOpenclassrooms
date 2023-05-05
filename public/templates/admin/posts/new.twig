@@ -8,7 +8,11 @@
     <form action="" method="post" class="row g-3 needs-validation" id="form_post" data-action="new" data-retarget-url="{{ route('admin_posts') }}">
         <div class="col-md-12">
             <label for="post_title" class="form-label">Titre de l'article</label>
-            <input type="text" class="form-control" name="post_title" id="post_title" required>
+            <input type="text" accept="image/png, image/jpeg, image/gif" class="form-control" name="post_title" id="post_title" required>
+        </div>
+        <div class="col-md-12">
+            <label for="post_image" class="form-label">Image</label>
+            <input type="file" class="form-control" name="post_image" id="post_image">
         </div>
         <div class="form_group">
             <label for="post_description" class="form-label">Description de l'article</label>

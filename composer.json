@@ -25,7 +25,8 @@
     "vlucas/phpdotenv": "^5.5",
     "scssphp/scssphp": "^1.11",
     "defuse/php-encryption": "^2.3",
-    "symfony/http-foundation": "^6.2"
+    "symfony/http-foundation": "^6.2",
+    "ext-gd": "*"
   },
   "scripts": {
     "phpstan": "vendor/bin/phpstan -c phpstan.neon"
