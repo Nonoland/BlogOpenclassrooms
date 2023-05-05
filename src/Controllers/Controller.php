@@ -4,6 +4,7 @@ namespace Nolandartois\BlogOpenclassrooms\Controllers;
 
 use Nolandartois\BlogOpenclassrooms\Core\Database\Configuration;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
+use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Dispatcher;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\RouteExtension;
 use Nolandartois\BlogOpenclassrooms\Core\Twig\WPMExtension;
@@ -61,6 +62,11 @@ abstract class Controller
         $this->twig->addFunction(new TwigFunction('getPostAuthorById', function(int $idUser) {
             return Post::getAuthorById($idUser);
         }));
+
+        /* Load Current User */
+        $currentUser = (int)$this->request->getSession()->get('user', 0);
+        $currentUser = new User($currentUser);
+        $this->twig->addGlobal('currentUser', $currentUser);
     }
 
     protected function getRequest(): Request
