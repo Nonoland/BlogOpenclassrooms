@@ -94,12 +94,12 @@ class Db
 
         foreach ($values as $name => &$value) {
             if (is_string($value)) {
-                $value = "$value";
+                $value = $this->pdo->quote($value);
             } elseif ($value instanceof \DateTime) {
                 $value = $value->format(ObjectModel::DATE_FORMAT);
-                $value = "$value";
+                $value = $this->pdo->quote($value);
             } elseif ($value === null) {
-                $value = "null";
+                $value = $this->pdo->quote("null");
             } elseif (is_bool($value)) {
                 $value = $value ? 1 : 0;
             }
@@ -118,12 +118,12 @@ class Db
             implode(', ', array_map(
                 function (mixed $value, string $name) {
                     if (is_string($value)) {
-                        $value = "'$value'";
+                        $value = $this->pdo->quote($value);
                     } elseif ($value instanceof \DateTime) {
                         $value = $value->format(ObjectModel::DATE_FORMAT);
-                        $value = "\"$value\"";
+                        $value = $this->pdo->quote($value);
                     } elseif ($value === null) {
-                        $value = "null";
+                        $value = $this->pdo->quote("null");
                     } elseif (is_bool($value)) {
                         $value = $value ? 1 : 0;
                     }

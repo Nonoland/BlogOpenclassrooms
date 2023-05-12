@@ -120,6 +120,7 @@ class AdminPostController extends AdminController
             if (file_exists($path)) {
                 unlink($path);
             }
+
             self::convertImageToWebP($image, $path);
         }
 

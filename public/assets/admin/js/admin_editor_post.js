@@ -71,4 +71,26 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    //Image preview
+    const image_input = document.getElementById("post_image");
+    const image_preview = document.getElementById("post_image_preview");
+
+    console.log(image_input);
+    console.log(image_preview);
+
+    image_input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const imageUrl = e.target.result;
+                image_preview.src = imageUrl;
+            }
+
+            reader.readAsDataURL(file);
+        }
+    });
 });
