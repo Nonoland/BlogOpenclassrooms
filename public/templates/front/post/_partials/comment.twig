@@ -8,7 +8,7 @@
 
         <div class="d-flex justify-content-between">
             <div class="d-flex flex-row align-items-center">
-                <p class="small mb-0">{{ getPostAuthorById(comment.idUser) }}</p>
+                <p class="small mb-0">{{ getPostAuthorById(comment.idUser) }} - {{ comment.dateAdd.format("d/m/Y") }}</p>
             </div>
             <div class="d-flex flex-row align-items-center">
                 <p class="small text-muted mb-0"><a href="#" class="comment_answer" data-comment-id="{{ comment.id }}">Répondre</a></p>
@@ -29,7 +29,7 @@
 
             <div class="d-flex justify-content-between">
                 <div class="d-flex flex-row align-items-center">
-                    <p class="small mb-0">{{ getPostAuthorById(commentChild.idUser) }}</p>
+                    <p class="small mb-0">{{ getPostAuthorById(commentChild.idUser) }} - {{ comment.dateAdd.format("d/m/Y") }}</p>
                 </div>
             </div>
         </div>
