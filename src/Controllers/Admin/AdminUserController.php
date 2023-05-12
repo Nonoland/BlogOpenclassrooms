@@ -40,14 +40,16 @@ class AdminUserController extends AdminController
         $userFirstname = $request->request->get('user_firstname', false);
         $userEmail = $request->request->get('user_email', false);
         $userPassword = $request->request->get('user_password', false);
+        $userRoles = $request->request->all('user_roles');
 
-        if ($userSubmit && $userLastname && $userFirstname && $userEmail && $userPassword) {
+        if ($userSubmit && $userLastname && $userFirstname && $userEmail && $userPassword && $userRoles) {
             $user = new User();
             $user->setFirstname($userFirstname);
             $user->setLastname($userLastname);
             $user->setEmail($userEmail);
-            $user->setRoles(['user']);
             $user->setPassword($userPassword);
+            $user->setRoles($userRoles);
+            $user->setExpireSession(new \DateTime('now'));
             $user->add();
 
             return self::redirect('/admin/users');
@@ -74,11 +76,13 @@ class AdminUserController extends AdminController
         $userFirstname = $request->request->get('user_firstname', false);
         $userEmail = $request->request->get('user_email', false);
         $userPassword = $request->request->get('user_password', false);
+        $userRoles = $request->request->all('user_roles');
 
-        if ($userSubmit && $userLastname && $userFirstname && $userEmail) {
+        if ($userSubmit && $userLastname && $userFirstname && $userEmail && $userRoles) {
             $user->setLastname($userLastname);
             $user->setFirstname($userFirstname);
             $user->setEmail($userEmail);
+            $user->setRoles($userRoles);
 
             if (!empty($userPassword)) {
                 $user->setPassword($userPassword);
