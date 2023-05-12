@@ -15,6 +15,10 @@
             <input type="file" class="form-control" name="post_image" id="post_image">
         </div>
         <div class="col-md-12">
+            <label for="post_image_preview" style="width: 100%;">Prévualisation de l'image</label>
+            <img src="{% if post.imageExist %}/public/uploads/posts/{{ post.slug }}.webp{% endif %}" alt="" class="post_image_preview" id="post_image_preview">
+        </div>
+        <div class="col-md-12">
             <label for="post_slug">Permalien</label>
             <input type="text" class="form-control" name="post_slug" id="post_slug" value="{{ post.slug }}">
         </div>
