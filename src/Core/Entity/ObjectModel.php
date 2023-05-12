@@ -71,7 +71,7 @@ class ObjectModel
 
             if (array_key_exists('required', $parameters) &&
                 !$parameters['required'] &&
-                $this->{$camelName} == null) {
+                $this->{$camelName} === null) {
                 continue;
             }
 

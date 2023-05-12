@@ -107,8 +107,6 @@ class Db
             $prepare->bindParam(":$name", $value);
         }
 
-        dump($prepare->queryString);
-
         return $prepare->execute();
     }
 
