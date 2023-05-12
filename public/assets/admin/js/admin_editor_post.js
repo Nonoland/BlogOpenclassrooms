@@ -32,6 +32,7 @@ const editor_config = {
 document.addEventListener('DOMContentLoaded', () => {
     const input_post_body = document.querySelector('input[name="post_body"]');
     const form = document.getElementById('form_post');
+    const form_submit = form.querySelector("button[type=submit]");
 
     //Si edit
     if (input_post_body.value) {
@@ -75,10 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //Image preview
     const image_input = document.getElementById("post_image");
     const image_preview = document.getElementById("post_image_preview");
-
-    console.log(image_input);
-    console.log(image_preview);
-
     image_input.addEventListener('change', (event) => {
         const file = event.target.files[0];
 
@@ -92,5 +89,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
             reader.readAsDataURL(file);
         }
+    });
+
+    //Slug test
+    const slug_input = document.getElementById("post_slug");
+    const current_slug = slug_input.value;
+    const slug_error = document.getElementById("slug_error");
+    slug_input.addEventListener("change", (event) => {
+
+        if (slug_input.value === current_slug) {
+            return;
+        }
+
+        fetch(
+            "/admin/ajax/posts/slug/" + slug_input.value,
+            {
+                method: 'POST',
+            }
+        ).then((response) => {
+            return response.json();
+        }).then((response) => {
+            if (!response) {
+                slug_error.textContent = "Attention ! Le slug est déjà présent, impossible de le modifier."
+                form_submit.disabled = true;
+            } else {
+                slug_error.textContent = "";
+                form_submit.disabled = false;
+            }
+        });
     });
 });

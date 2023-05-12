@@ -3,6 +3,7 @@
 namespace Nolandartois\BlogOpenclassrooms\Controllers\Admin;
 
 use Nolandartois\BlogOpenclassrooms\Controllers\AdminController;
+use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\Post;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
 use Nolandartois\BlogOpenclassrooms\Core\Routing\Attributes\Route;
@@ -151,6 +152,21 @@ class AdminPostController extends AdminController
         $post->delete();
 
         return self::redirect('/admin/posts');
+    }
+
+    #[Route(['GET', 'POST'], '/admin/ajax/posts/slug/{slug:string}'), RouteAccess('admin')]
+    public function postSlugVerifyAjax(array $params): Response
+    {
+        $slug = (string)$params['slug'];
+        $dbInstance = Db::getInstance();
+
+        $find = $dbInstance->select('post', sprintf("slug = %s", $dbInstance->getPDO()->quote($slug)));
+
+        if (!empty($find)) {
+            return $this->displayAjax(0);
+        }
+
+        return $this->displayAjax(1);
     }
 
     public static function convertImageToWebP(UploadedFile $sourceImage, string $outputImage, int $quality = 80): bool
