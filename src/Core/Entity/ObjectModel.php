@@ -69,6 +69,12 @@ class ObjectModel
                 continue;
             }
 
+            if (array_key_exists('required', $parameters) &&
+                !$parameters['required'] &&
+                $this->{$camelName} === null) {
+                continue;
+            }
+
             if (is_array($this->{$camelName})) {
                 $data[$nameValue] = json_encode($this->{$camelName});
             } else {

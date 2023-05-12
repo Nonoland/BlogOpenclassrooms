@@ -16,8 +16,13 @@ class User extends ObjectModel
             'email' => [],
             'password' => [],
             'roles' => [],
-            'expire_session' => []
+            'expire_session' => ['required' => false]
         ]
+    ];
+
+    public static array $userRoles = [
+        'user',
+        'admin'
     ];
 
     protected string $username = "";
@@ -26,7 +31,7 @@ class User extends ObjectModel
     protected string $email = "";
     protected string $password = "";
     protected array $roles = [];
-    protected DateTime $expireSession;
+    protected ?DateTime $expireSession = null;
     protected bool $guest;
 
     public function __construct(int $id = 0)

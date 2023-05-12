@@ -22,6 +22,14 @@
             <label for="user_password" class="form-label">Mot de passe</label>
             <input type="text" class="form-control" name="user_password" id="user_password" required>
         </div>
+        <div class="col-md-12">
+            <label for="user_roles">Rôles</label>
+            <select name="user_roles[]" id="user_roles" class="form-control" multiple>
+                {% for role in userRoles %}
+                    <option value="{{ role }}">{{ role }}</option>
+                {% endfor %}
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary" name="user_submit">Enregistrer</button>
     </form>
 {% endblock %}
