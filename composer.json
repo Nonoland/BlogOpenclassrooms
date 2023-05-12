@@ -26,8 +26,7 @@
     "scssphp/scssphp": "^1.11",
     "defuse/php-encryption": "^2.3",
     "symfony/http-foundation": "^6.2",
-    "ext-gd": "*",
-    "ext-mysqli": "*"
+    "ext-gd": "*"
   },
   "scripts": {
     "phpstan": "vendor/bin/phpstan -c phpstan.neon"
