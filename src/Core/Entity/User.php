@@ -10,7 +10,6 @@ class User extends ObjectModel
     public static array $definitions = [
         'table' => 'user',
         'values' => [
-            'username' => [],
             'lastname' => [],
             'firstname' => [],
             'email' => [],
@@ -27,7 +26,6 @@ class User extends ObjectModel
         'admin'
     ];
 
-    protected string $username = "";
     protected string $lastname = "";
     protected string $firstname = "";
     protected string $email = "";
@@ -58,22 +56,6 @@ class User extends ObjectModel
         }
 
         return $addResult;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     */
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
     }
 
     /**
