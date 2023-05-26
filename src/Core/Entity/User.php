@@ -217,19 +217,4 @@ class User extends ObjectModel
     {
         return Db::getInstance()->select(self::$definitions['table']);
     }
-
-    public static function getCookieKey(int $idUser): string|bool
-    {
-        $dbInstance = Db::getInstance();
-        $result = $dbInstance->select(
-            self::$definitions['table'],
-            "id = $idUser"
-        );
-
-        if (empty($result)) {
-            return false;
-        }
-
-        return $result[0]['cookie_key'];
-    }
 }

@@ -59,23 +59,6 @@ class Authentification
         return $user->update();
     }
 
-    public static function getAuthentificateUser(string $cookieKey): User|false
-    {
-        $dbInstance = Db::getInstance();
-
-        $users = $dbInstance->select(User::$definitions['table'], "cookie_key = \"$cookieKey\"");
-
-        if (count($users) > 1) {
-            return false;
-        }
-
-        if (empty($users)) {
-            return false;
-        }
-
-        return new User($users[0]['id']);
-    }
-
     public static function generateRandomKey(): string
     {
         return bin2hex(random_bytes(16));
