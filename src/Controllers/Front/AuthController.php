@@ -111,4 +111,52 @@ class AuthController extends FrontController
 
         return new Response($content);
     }
+
+    #[Route(['GET', 'POST'], '/forgotten_password')]
+    public function forgottenPassword(): Response
+    {
+        $request = $this->getRequest();
+        /** @var User $currentUser */
+        $currentUser = new User($request->getSession()->get('user', 0));
+
+        if (!$currentUser->isGuest()) {
+            return self::redirect('/my_account');
+        }
+
+        $submit = $request->request->has("submit");
+        $email = $request->request->get('email', false);
+
+        if ($submit && $email) {
+            Authentification::forgottenPassword($email);
+        }
+
+        $templates = $this->getTwig()->load('front/user/forgotten_password.twig');
+        $content = $templates->render([]);
+
+        return new Response($content);
+    }
+
+    #[Route(['GET', 'POST'], '/change_password/{key:string}')]
+    public function changePassword(array $params): Response
+    {
+        $request = $this->getRequest();
+
+        if (!Authentification::isForgottenPasswordKeyValid($params['key'])) {
+            return self::redirect('/');
+        }
+
+        $submit = $request->request->has("submit");
+        $password = $request->request->get('password', false);
+        $rpPassword = $request->request->get('rp_password', false);
+
+        if ($submit && $password && $rpPassword && $password === $rpPassword) {
+            Authentification::changePasswordWithForgottenPasswordKey($params['key'], $password);
+
+            return self::redirect('/login');
+        }
+
+        $templates = $this->getTwig()->load('front/user/change_password.twig');
+        $content = $templates->render([]);
+        return new Response($content);
+    }
 }

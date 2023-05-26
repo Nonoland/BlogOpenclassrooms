@@ -16,7 +16,9 @@ class User extends ObjectModel
             'email' => [],
             'password' => [],
             'roles' => [],
-            'expire_session' => ['required' => false]
+            'expire_session' => ['required' => false],
+            'forgotten_password' => ['required' => false],
+            'active' => []
         ]
     ];
 
@@ -33,6 +35,10 @@ class User extends ObjectModel
     protected array $roles = [];
     protected ?DateTime $expireSession = null;
     protected bool $guest;
+
+    protected ?string $forgottenPassword = null;
+
+    protected int $active = 0;
 
     public function __construct(int $id = 0)
     {
@@ -175,6 +181,30 @@ class User extends ObjectModel
         return $this->guest;
     }
 
+    public  function getForgottenPassword(): String
+    {
+        return $this->forgottenPassword;
+    }
+
+    public  function setForgottenPassword(String $forgottenPassword): void
+    {
+        $this->forgottenPassword = $forgottenPassword;
+    }
+
+    public function active(): void
+    {
+        $this->active = 1;
+    }
+
+    public function desactive(): void
+    {
+        $this->active = 0;
+    }
+
+    public function getActive(): int
+    {
+        return $this->active;
+    }
     public static function userExistByEmail(string $email): bool
     {
         $dbInstance = Db::getInstance();
