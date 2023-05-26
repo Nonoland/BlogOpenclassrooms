@@ -4,8 +4,11 @@ namespace Nolandartois\BlogOpenclassrooms\Core\Auth;
 
 use Cassandra\Date;
 use DateTime;
+use Nolandartois\BlogOpenclassrooms\Core\Database\Configuration;
 use Nolandartois\BlogOpenclassrooms\Core\Database\Db;
 use Nolandartois\BlogOpenclassrooms\Core\Entity\User;
+use Nolandartois\BlogOpenclassrooms\Core\Mail\Mail;
+use PhpParser\Node\Scalar\String_;
 use Symfony\Component\HttpFoundation\Request;
 
 class Authentification
@@ -29,6 +32,10 @@ class Authentification
         }
 
         $currentUser = new User($users[0]['id']);
+
+        if (!$currentUser->getActive()) {
+            return false;
+        }
 
         $expireSession = new DateTime();
         $expireSession->modify('+1 day');
@@ -74,6 +81,16 @@ class Authentification
         return bin2hex(random_bytes(16));
     }
 
+    public static function generateForgottenPasswordKey(): String
+    {
+        $date = new DateTime();
+        $date->modify('+' . $_ENV['FORGOTTEN_PASSWORD_DELAY'] . ' days');
+
+        $expireationCode = base_convert($date->getTimestamp(), 10, 36);
+
+        return self::generateRandomKey() . $expireationCode;
+    }
+
     public static function registerNewUser(string $firstname, string $lastname, string $email, string $password): bool
     {
         if (User::userExistByEmail($email)) {
@@ -86,6 +103,7 @@ class Authentification
         $user->setEmail($email);
         $user->setPassword($password);
         $user->setRoles(['user']);
+        $user->active();
 
         return $user->add();
     }
@@ -103,6 +121,76 @@ class Authentification
         if ($currentUser->getExpireSession()->diff($dateNow)->invert === 0) {
             $request->getSession()->set('user', 0);
         }
+    }
+
+    public static function forgottenPassword(string $email): void
+    {
+        $dbInstance = Db::getInstance();
+        $findUser = $dbInstance->select('user', sprintf('email = %s', $dbInstance->getPDO()->quote($email)), ['id']);
+
+        if (empty($findUser)) {
+            return;
+        }
+
+        $user = new User($findUser[0]['id']);
+        $user->setForgottenPassword(self::generateForgottenPasswordKey());
+        $user->desactive();
+        $user->update();
+
+        $link = Configuration::getConfiguration("blog_domain") . '/change_password/' . $user->getForgottenPassword();
+
+        /*Mail::sendMailToUser(
+            (int) $findUser[0]['id'],
+            "Mot de passe oublié",
+            "Vous avez indiqué avoir oublié votre mot de passe. Voici le lien pour modifier votre mot de passe <a href=\"$link\">Accèder à la page</a>",
+            "Vous avez indiqué avoir oublié votre mot de passe. Voici le lien pour modifier votre mot de passe : $link",
+            true
+        );*/
+    }
+
+    public static function isForgottenPasswordKeyValid(string $keyWithExpiration): bool
+    {
+        $key = substr($keyWithExpiration, 0, 32);
+        $expirationCode = substr($keyWithExpiration, 32);
+
+        $expirationTimestamp = base_convert($expirationCode, 36, 10);
+
+        $dbIntance = Db::getInstance();
+        $findUser = $dbIntance->select('user', sprintf('forgotten_password = "%s"', $keyWithExpiration), ['id', 'active']);
+
+        if (empty($findUser)) {
+            return false;
+        }
+
+        if ($findUser[0]['active'] == 1) {
+            return false;
+        }
+
+        if (new DateTime() > (new DateTime())->setTimestamp($expirationTimestamp)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function changePasswordWithForgottenPasswordKey(string $key, string $password): bool
+    {
+        if (!self::isForgottenPasswordKeyValid($key)) {
+            return false;
+        }
+
+        $dbIntance = Db::getInstance();
+        $findUser = $dbIntance->select('user', sprintf('forgotten_password = "%s"', $key), ['id', 'active']);
+
+        if (empty($findUser)) {
+            return false;
+        }
+
+        $user = new User($findUser[0]['id']);
+        $user->active();
+        $user->setPassword($password);
+        $user->setForgottenPassword('');
+        return $user->update();
     }
 
 }
