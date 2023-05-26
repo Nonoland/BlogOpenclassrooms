@@ -139,13 +139,13 @@ class Authentification
 
         $link = Configuration::getConfiguration("blog_domain") . '/change_password/' . $user->getForgottenPassword();
 
-        /*Mail::sendMailToUser(
+        Mail::sendMailToUser(
             (int) $findUser[0]['id'],
             "Mot de passe oublié",
             "Vous avez indiqué avoir oublié votre mot de passe. Voici le lien pour modifier votre mot de passe <a href=\"$link\">Accèder à la page</a>",
             "Vous avez indiqué avoir oublié votre mot de passe. Voici le lien pour modifier votre mot de passe : $link",
             true
-        );*/
+        );
     }
 
     public static function isForgottenPasswordKeyValid(string $keyWithExpiration): bool

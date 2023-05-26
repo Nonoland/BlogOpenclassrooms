@@ -113,7 +113,7 @@ class AuthController extends FrontController
     }
 
     #[Route(['GET', 'POST'], '/forgotten_password')]
-    public function forgottenPassword()
+    public function forgottenPassword(): Response
     {
         $request = $this->getRequest();
         /** @var User $currentUser */
